@@ -82,7 +82,8 @@ DB Architecture:
 ⚙️ Getting Started for Frontend:
 1. Clone the Repo
 git clone (https://github.com/PrasannakumarV-93058/JudiciaryManagementSite.git)
-cd legal-case-management/backend
+
+cd judiciary-fe-v1
 
 2.Install Dependencies
 npm install
@@ -93,16 +94,17 @@ npm run start
 ⚙️ Getting Started for Backend:
 1. Clone the Repo
 git clone (https://github.com/PrasannakumarV-93058/JudiciaryManagementSite.git)
-cd legal-case-management/backend
+
+cd JudiciaryManagementSiteBackend
 
 
-2. Install Dependencies
+3. Install Dependencies
 ./mvnw install     # For Spring Boot
 
-3. Run the Application
+4. Run the Application
 ./mvnw spring-boot:run
 
-4. Initialize the Database
+5. Initialize the Database
 psql -U postgres -f db
 
 
