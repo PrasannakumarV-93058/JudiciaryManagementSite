@@ -1,6 +1,9 @@
 package com.fsad.JudiciaryManagementSiteBackend.DTO;
 
-public class LoginReponse {
+import lombok.Data;
+
+@Data
+public class LoginResponse {
 
 	private String token;
 

@@ -20,7 +20,7 @@ public class Hearing {
 
 	@ManyToOne
 	@JoinColumn(name = "case_id")
-	private Case courtCase;
+	private Case case_id;
 
 	private LocalDateTime nextHearingDate;
 

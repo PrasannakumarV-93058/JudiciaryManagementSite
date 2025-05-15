@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -24,16 +23,16 @@ public class User {
 
 	private String username;
 
-	private String role; // Example: JUDGE, LAWYER, PLAINTIFF, PROSECUTOR, OPPONENT
-
 	private String fullName;
 
 	private String email;
+
+	private String password;
+
+	private String role; // Example: JUDGE, ADVOCATE(LAWYER, PROSECUTOR), CLERK, CLIENT(PLAINTIFF, OPPONENT)
 
 	private String phone;
 
 	private LocalDateTime createdAt;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<Advocate> advocateProfiles;
 }

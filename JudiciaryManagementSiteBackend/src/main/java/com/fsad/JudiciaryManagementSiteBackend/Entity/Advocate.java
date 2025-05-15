@@ -19,7 +19,7 @@ public class Advocate {
 	// References a user
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private User user;
+	private User user_id;
 
 	// References a case
 	@ManyToOne

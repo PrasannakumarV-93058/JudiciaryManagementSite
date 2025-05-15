@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "cases")
@@ -18,13 +19,10 @@ public class Case {
 	private Integer id;
 
 	private String category;
-
 	private String status;
-
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 	private LocalDateTime nextHearing;
-
 	private LocalDateTime createdAt;
 
 	@ManyToOne
@@ -46,5 +44,20 @@ public class Case {
 	@ManyToOne
 	@JoinColumn(name = "opponent_id")
 	private User opponent;
-}
 
+	@ManyToMany
+	@JoinTable(
+			name = "case_advocates",
+			joinColumns = @JoinColumn(name = "case_id"),
+			inverseJoinColumns = @JoinColumn(name = "user_id")
+	)
+	private List<User> advocates;
+
+	@ManyToMany
+	@JoinTable(
+			name = "case_clients",
+			joinColumns = @JoinColumn(name = "case_id"),
+			inverseJoinColumns = @JoinColumn(name = "user_id")
+	)
+	private List<User> clients;
+}
