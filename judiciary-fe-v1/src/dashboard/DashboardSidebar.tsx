@@ -47,7 +47,7 @@ export function DashboardSidebar({ role }: SidebarProps) {
       },
     ];
 
-    const roleSpecificItems = {
+    const roleSpecificItems: Record<string, { title: string; href: string; icon: React.ReactNode }[]> = {
       judge: [
         {
           title: "Cases",
@@ -137,7 +137,7 @@ export function DashboardSidebar({ role }: SidebarProps) {
 
     return [
       ...commonItems.slice(0, 1),
-      ...roleSpecificItems[role as keyof typeof roleSpecificItems],
+      ...(roleSpecificItems[role] || []),
       ...commonItems.slice(1),
     ];
   };

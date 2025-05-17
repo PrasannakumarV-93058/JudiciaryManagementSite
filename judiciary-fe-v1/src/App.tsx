@@ -1,12 +1,31 @@
-import './App.css'
-
+import { BrowserRouter, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import Home from "./Home";
 import LoginPage from './login/Login';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import RegisterPage from './register/register';
-import { DashboardSidebar } from './dashboard/dashboard-sidebar';
-import CalendarPage from './dashboard/[role]/calender/calender';
+import DashboardLayout from './dashboard/DashboardLayout';
 import ErrorBoundary from "./components/ui/ErrorBoundary";
+import { roleRoutes, Role } from './routes/roleRoutes';
+
+function RoleBasedRoutes() {
+  const { role } = useParams();
+  const roleKey = role as Role;
+
+  const allowedRoutes = roleRoutes[roleKey];
+
+  if (!allowedRoutes) return <Navigate to="/" replace />;
+
+  return (
+    <DashboardLayout>
+      <Routes>
+        {allowedRoutes.map(({ path, element }) => (
+          <Route path={path} element={element} />
+        ))}
+        {/* Optionally a fallback 404 for unauthorized subroutes */}
+        <Route path="*" element={<div>Page not found or unauthorized</div>} />
+      </Routes>
+    </DashboardLayout>
+  );
+}
 
 function App() {
   return (
@@ -16,12 +35,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/calender" element={<CalendarPage />} />
-          <Route path="/dashboard/:role" element={<DashboardSidebar role={''} />} />
+
+          {/* Dynamically render based on role */}
+          <Route path="/dashboard/:role/*" element={<RoleBasedRoutes />} />
         </Routes>
       </ErrorBoundary>
     </BrowserRouter>
   );
 }
 
-export default App
+export default App;
