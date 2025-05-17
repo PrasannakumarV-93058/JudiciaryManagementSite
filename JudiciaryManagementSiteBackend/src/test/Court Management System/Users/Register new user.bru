@@ -1,0 +1,27 @@
+meta {
+  name: Register new user
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/api/users/register
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQ0xFUksiXSwiaWF0IjoxNzQ3NDUwOTEwLCJleHAiOjE3NDc1MzczMTB9.9x4qO6HQUu2Lecxqpc0r_HDU5NN-3HdkJYYvLZOkqiCtIZ2qv8hP8jmsFlWpBs3cJeF9oEgpL20BGEg_0hbMBA
+}
+
+body:json {
+  {
+    "username": "Sandhyana",
+    "fullName": "Sandhyana",
+    "email": "Sandhyana@example.com",
+    "password": "Sandhyana",
+    "role": "CLIENT",
+    "phone": "+91-9744444441"
+  }
+  
+}

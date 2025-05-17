@@ -1,0 +1,15 @@
+meta {
+  name: Get all cases assigned to a judge
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8080/api/judges/5/cases
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJDTEVSSyIsImlhdCI6MTc0NzQ2Mjg2OCwiZXhwIjoxNzQ3NTQ5MjY4fQ.XfvKacJ-8-3YddIEjzPJGI-3OAOL_AJXCemjnY8pd9xDT6ooD3Jw9vcN2nS9Aw_T6WltCwzzlLHUU_tkHqmgJA
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Get cases where Judge is involved
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:8080/api/cases/judge/5
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJDTEVSSyIsImlhdCI6MTc0NzQ2Mjk5NywiZXhwIjoxNzQ3NTQ5Mzk3fQ.N47VxFV-yfnOm-K4cSPosK3HQ2V5WD5MAmw0XzaOIO99wuqqReY4a2dMCq4_AxE66B3nt4QEI2qw5jTdXPltXQ
+}
