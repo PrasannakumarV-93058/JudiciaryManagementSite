@@ -40,7 +40,7 @@ public class ReportController {
 	// Endpoint to get summarized judgments
 	@GetMapping("/judgements")
 	@Operation(summary = "Get summarized list of judgments")
-	@PreAuthorize("hasRole('Admin') or hasRole('Clerk')")  // Restrict to specific roles
+	@PreAuthorize("hasRole('CLERK')")  // Restrict to specific roles
 	public List<CaseDisplayDTO> getJudgementSummaries() {
 		try {
 			List<CaseDisplayDTO> judgementSummaries = reportService.generateCaseDisplayReports();

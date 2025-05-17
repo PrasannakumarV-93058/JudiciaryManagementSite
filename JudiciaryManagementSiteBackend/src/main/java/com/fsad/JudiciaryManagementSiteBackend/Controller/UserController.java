@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.fsad.JudiciaryManagementSiteBackend.DTO.UserDisplayDTO;
 import java.util.List;
@@ -16,6 +17,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -28,7 +32,7 @@ public class UserController {
 		};
 	}
 
-	@PreAuthorize("hasRole('Clerk')")
+	@PreAuthorize("hasRole('CLERK')")
 	@Operation(summary = "Get all users for display with unified roles")
 	@GetMapping("/display")
 	public List<UserDisplayDTO> getAllUsersForDisplay() {
@@ -42,7 +46,7 @@ public class UserController {
 				.collect(Collectors.toList());
 	}
 
-	@PreAuthorize("hasRole('Clerk')")
+	@PreAuthorize("hasRole('CLERK')")
 	@Operation(summary = "Get user by ID")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "User found"),
@@ -66,6 +70,7 @@ public class UserController {
 	@Operation(summary = "Create new user")
 	@PostMapping("/register")
 	public User createUser(@RequestBody User user) {
+		user.setPassword(passwordEncoder.encode(user.getPassword())); // Always encode before saving
 		return userRepository.save(user);
 	}
 
