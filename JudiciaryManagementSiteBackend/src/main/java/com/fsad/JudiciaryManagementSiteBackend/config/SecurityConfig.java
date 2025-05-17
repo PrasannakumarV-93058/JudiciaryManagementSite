@@ -1,7 +1,7 @@
 package com.fsad.JudiciaryManagementSiteBackend.config;
 
-import com.fsad.JudiciaryManagementSiteBackend.Service.JwtService;
 import com.fsad.JudiciaryManagementSiteBackend.Filter.JwtAuthenticationFilter;
+import com.fsad.JudiciaryManagementSiteBackend.Service.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,18 +28,20 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			.csrf(csrf -> csrf.disable())
-			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/api/auth/login").permitAll() // Allow login without authentication
-				.anyRequest().authenticated()
-			)
-			.authenticationProvider(authenticationProvider())
-			.addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
+				.csrf(csrf -> csrf.disable())
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/api/auth/login").permitAll()
+						.anyRequest().authenticated()
+				)
+				.authenticationProvider(authenticationProvider())
+				.addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
+
 		return http.build();
 	}
 
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
 		return authenticationConfiguration.getAuthenticationManager();
 	}
 
@@ -47,12 +49,12 @@ public class SecurityConfig {
 	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 		authProvider.setUserDetailsService(userDetailsService);
-		authProvider.setPasswordEncoder(passwordEncoder());
+		authProvider.setPasswordEncoder(passwordEncoder()); // crucial for password encryption
 		return authProvider;
 	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder(); // BCrypt is a strong one-way hash
 	}
 }
