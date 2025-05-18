@@ -3,7 +3,9 @@
 import { JSX } from "react";
 import { Home, Calendar, Settings, FileText, Gavel, BarChart3, Users, BookOpen, Clock, FileSearch, MessageSquare } from "lucide-react";
 import CalendarPage from "../dashboard/judge/calender/calender";
-import HearingPage from "../dashboard/judge/hearing/hearing";
+import HearingPage from "../dashboard/judge/hearings/hearings";
+import CasesPage from "../dashboard/judge/cases/CasesPage";
+import JudgeDashboard from "../dashboard/judge/JudgeDashboard";
 // Define type for Role
 export type Role = "judge" | "lawyer" | "clerk" | "prosecutor" | "client";
 
@@ -22,7 +24,7 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       title: "Dashboard",
       path: ``,
       icon: <Home className="h-5 w-5" />,
-      element: <Home name="Dashboard" />,
+      element: <JudgeDashboard/>,
     },
     {
       title: "Calendar",
@@ -40,7 +42,7 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       title: "Cases",
       path: "cases",
       icon: <FileText className="h-5 w-5" />,
-      element: <FileText name="Judge Cases" />,
+      element: <CasesPage />,
     },
     {
       title: "Hearings",
