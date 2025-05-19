@@ -1,5 +1,6 @@
 package com.fsad.JudiciaryManagementSiteBackend.Controller;
 
+import com.fsad.JudiciaryManagementSiteBackend.DTO.IdFetchDTO;
 import com.fsad.JudiciaryManagementSiteBackend.Entity.User;
 import com.fsad.JudiciaryManagementSiteBackend.Repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.fsad.JudiciaryManagementSiteBackend.DTO.UserDisplayDTO;
@@ -31,6 +34,16 @@ public class UserController {
 			default -> role.toUpperCase();
 		};
 	}
+
+
+
+	@GetMapping("/role/{role}")
+	public List<IdFetchDTO> getUsersByRole(@PathVariable String role) {
+		return userRepository.findByRoleIgnoreCase(role).stream()
+				.map(user -> new IdFetchDTO(user.getId(), user.getFullName()))
+				.collect(Collectors.toList());
+	}
+
 
 	@PreAuthorize("hasRole('CLERK')")
 	@Operation(summary = "Get all users for display with unified roles")
@@ -92,5 +105,7 @@ public class UserController {
 			return ResponseEntity.noContent().<Void>build();
 		}).orElse(ResponseEntity.notFound().build());
 	}
+
+
 
 }

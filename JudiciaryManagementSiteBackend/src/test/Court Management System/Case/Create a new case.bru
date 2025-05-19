@@ -1,0 +1,85 @@
+meta {
+  name: Create a new case
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8080/api/cases/createcase
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJDTEVSSyIsImlhdCI6MTc0NzY2NzE1MCwiZXhwIjoxNzQ3NzUzNTUwfQ.kgfBDV6oiJtgnRNfKWju9DDwP3jFiNIdcgQli5uy93o_yaFkNMIPSyRDcQYLeu8gdXSPxKDWUoqzn7qA5ThNLw
+}
+
+body:json {
+  {
+    "id": 1,
+    "category": "Criminal",
+    "status": "Open",
+    "startDate": "2025-01-01T10:00:00",
+    "endDate": "2025-12-31T15:00:00",
+    "nextHearing": "2025-06-15T14:00:00",
+    "createdAt": "2025-01-01T09:00:00",
+    "judge": {
+      "id": 101,
+      "fullName": "Judge John Doe",
+      "email": "judge.johndoe@example.com",
+      "role": "JUDGE"
+    },
+    "lawyer": {
+      "id": 102,
+      "fullName": "Lawyer Jane Smith",
+      "email": "lawyer.janesmith@example.com",
+      "role": "LAWYER"
+    },
+    "prosecutor": {
+      "id": 103,
+      "fullName": "Prosecutor Alice Brown",
+      "email": "prosecutor.alicebrown@example.com",
+      "role": "PROSECUTOR"
+    },
+    "plaintiff": {
+      "id": 104,
+      "fullName": "Plaintiff Bob White",
+      "email": "plaintiff.bobwhite@example.com",
+      "role": "PLAINTIFF"
+    },
+    "opponent": {
+      "id": 105,
+      "fullName": "Opponent Charlie Black",
+      "email": "opponent.charlieblack@example.com",
+      "role": "OPPONENT"
+    },
+    "advocates": [
+      {
+        "id": 106,
+        "fullName": "Advocate Emily Green",
+        "email": "advocate.emilygreen@example.com",
+        "role": "ADVOCATE"
+      },
+      {
+        "id": 107,
+        "fullName": "Advocate Frank Blue",
+        "email": "advocate.frankblue@example.com",
+        "role": "ADVOCATE"
+      }
+    ],
+    "clients": [
+      {
+        "id": 108,
+        "fullName": "Client Grace Yellow",
+        "email": "client.graceyellow@example.com",
+        "role": "CLIENT"
+      },
+      {
+        "id": 109,
+        "fullName": "Client Harry Orange",
+        "email": "client.harryorange@example.com",
+        "role": "CLIENT"
+      }
+    ]
+  }
+}
