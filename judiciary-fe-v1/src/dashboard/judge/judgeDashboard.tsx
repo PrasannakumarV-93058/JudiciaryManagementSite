@@ -98,6 +98,20 @@ const JudgeDashboard: React.FC = () => {
           plaintiff: { id: 14, username: '', role: 'plaintiff', fullName: 'Plaintiff Jim Halpert', email: '', phone: '', createdAt: '' },
           opponent: { id: 15, username: '', role: 'opponent', fullName: 'Opponent Dwight', email: '', phone: '', createdAt: '' },
         },
+        {
+            id: 4,
+            category: 'Family',
+            status: 'Pending',
+            startDate: '2025-05-10T10:00:00Z',
+            endDate: null,
+            nextHearing: '2025-06-01T10:00:00Z',
+            createdAt: '2025-05-01T10:00:00Z',
+            judge: { id: 1, username: 'judge01', role: 'judge', fullName: 'Hon. John Doe', email: '', phone: '', createdAt: '' },
+            lawyer: { id: 2, username: '', role: 'lawyer', fullName: 'Lawyer Smith', email: '', phone: '', createdAt: '' },
+            prosecutor: { id: 3, username: '', role: 'prosecutor', fullName: 'Prosecutor Jane', email: '', phone: '', createdAt: '' },
+            plaintiff: { id: 4, username: '', role: 'plaintiff', fullName: 'Plaintiff Jim', email: '', phone: '', createdAt: '' },
+            opponent: { id: 5, username: '', role: 'opponent', fullName: 'Opponent Bob', email: '', phone: '', createdAt: '' },
+          },
       ]);
       setLoading(false);
     }, 1000);

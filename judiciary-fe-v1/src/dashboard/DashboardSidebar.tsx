@@ -39,12 +39,7 @@ export function DashboardSidebar({ role }: SidebarProps) {
         title: "Calendar",
         href: `/dashboard/${role}/calendar`,
         icon: <Calendar className="h-5 w-5" />,
-      },
-      {
-        title: "Settings",
-        href: `/dashboard/${role}/settings`,
-        icon: <Settings className="h-5 w-5" />,
-      },
+      }
     ];
 
     const roleSpecificItems: Record<string, { title: string; href: string; icon: React.ReactNode }[]> = {
@@ -85,19 +80,14 @@ export function DashboardSidebar({ role }: SidebarProps) {
       clerk: [
         {
           title: "Case Filing",
-          href: `/dashboard/${role}/filing`,
+          href: `/dashboard/${role}/create-case`,
           icon: <FileText className="h-5 w-5" />,
         },
         {
           title: "Court Schedule",
-          href: `/dashboard/${role}/schedule`,
+          href: `/dashboard/${role}/schedule-hearing`,
           icon: <Clock className="h-5 w-5" />,
-        },
-        {
-          title: "Document Management",
-          href: `/dashboard/${role}/documents`,
-          icon: <FileSearch className="h-5 w-5" />,
-        },
+        }
       ],
       prosecutor: [
         {

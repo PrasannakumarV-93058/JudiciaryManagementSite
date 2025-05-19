@@ -5,7 +5,10 @@ import { Home, Calendar, Settings, FileText, Gavel, BarChart3, Users, BookOpen, 
 import CalendarPage from "../dashboard/judge/calender/calender";
 import HearingPage from "../dashboard/judge/hearings/hearings";
 import CasesPage from "../dashboard/judge/cases/CasesPage";
-import JudgeDashboard from "../dashboard/judge/JudgeDashboard";
+import JudgeDashboard from "../dashboard/judge/judgeDashboard";
+import ClerkDashboard from "../dashboard/clerk/clerkDashboard";
+import ClerkCreate from "../dashboard/clerk/CreateCase";
+import ScheduleHearing from "../dashboard/clerk/ScheduleHearing";
 // Define type for Role
 export type Role = "judge" | "lawyer" | "clerk" | "prosecutor" | "client";
 
@@ -32,12 +35,7 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       icon: <Calendar className="h-5 w-5" />,
       element: <CalendarPage />,
     },
-    {
-      title: "Settings",
-      path: `settings`,
-      icon: <Settings className="h-5 w-5" />,
-      element: <Settings name="Settings" />,
-    },
+
     {
       title: "Cases",
       path: "cases",
@@ -100,19 +98,25 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       title: "Dashboard",
       path: ``,
       icon: <Home className="h-5 w-5" />,
-      element: <Home name="Dashboard" />,
+      element: <ClerkDashboard/>,
+    },
+    {
+      title: "Create Case",
+      path: `create-case`,
+      icon: <Home className="h-5 w-5" />,
+      element: <ClerkCreate/>,
+    },
+    {
+      title: "schedule-hearing",
+      path: `schedule-hearing`,
+      icon: <Home className="h-5 w-5" />,
+      element: <ScheduleHearing/>,
     },
     {
       title: "Calendar",
       path: `calendar`,
       icon: <Calendar className="h-5 w-5" />,
       element: <CalendarPage />,
-    },
-    {
-      title: "Settings",
-      path: `settings`,
-      icon: <Settings className="h-5 w-5" />,
-      element: <Settings name="Settings" />,
     },
     {
       title: "Case Filing",
@@ -132,6 +136,7 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       icon: <FileSearch className="h-5 w-5" />,
       element: <FileSearch name="Document Management" />,
     },
+    
   ],
   prosecutor: [
     {
