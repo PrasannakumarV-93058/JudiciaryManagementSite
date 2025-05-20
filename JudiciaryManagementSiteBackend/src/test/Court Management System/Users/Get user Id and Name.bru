@@ -1,0 +1,15 @@
+meta {
+  name: Get user Id and Name
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8080/api/users/role/client
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJDTEVSSyIsImlhdCI6MTc0NzY3MTM0NywiZXhwIjoxNzQ3NzU3NzQ3fQ.G2qWqPPR7FD5PlhQIxzCZnrcY-actvrrPGDV9nyNoLG-91x66PzYGUgnoplA7gIJr6co9fov-XH7UY-kdjeEuA
+}

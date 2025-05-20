@@ -1,5 +1,6 @@
 package com.fsad.JudiciaryManagementSiteBackend.Controller;
 
+import com.fsad.JudiciaryManagementSiteBackend.DTO.IdFetchDTO;
 import com.fsad.JudiciaryManagementSiteBackend.Entity.Case;
 import com.fsad.JudiciaryManagementSiteBackend.Entity.Hearing;
 import com.fsad.JudiciaryManagementSiteBackend.Repository.JudgeRepository;
@@ -17,6 +18,20 @@ public class JudgeController {
 
 	@Autowired
 	private JudgeRepository judgeRepository;
+
+//	@GetMapping("/{id}")
+//	@Operation(summary = "Get name and ID of a specific judge by ID")
+//	public IdFetchDTO getNameAndId(@PathVariable Integer id) {
+//		return judgeRepository.getNameAndId(id);
+//	}
+
+
+	@GetMapping
+	public List<IdFetchDTO> getAllJudges() {
+		return judgeRepository.getAllJudges();
+	}
+
+
 
 	@GetMapping("/{judgeId}/cases")
 	@Operation(summary = "Get all cases assigned to a judge")
