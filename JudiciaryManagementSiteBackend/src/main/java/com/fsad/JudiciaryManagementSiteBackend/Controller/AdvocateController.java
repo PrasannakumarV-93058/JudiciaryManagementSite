@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/advocates")
 @Tag(name = "Advocate Controller", description = "CRUD APIs for Advocate entity")
