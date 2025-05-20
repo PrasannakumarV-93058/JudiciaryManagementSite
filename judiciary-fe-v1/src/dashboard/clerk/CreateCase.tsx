@@ -41,8 +41,8 @@ const ClerkCreate: React.FC = () => {
     const fetchDropdownData = async () => {
       try {
         const [judgesRes, lawyersRes, prosecutorsRes, plaintiffsRes, opponentsRes] = await Promise.all([
-          fetch('/api/judges'), // Replace with your API endpoint
-          fetch('/api/lawyers'),
+          fetch('/api/users/role/judge'), // Replace with your API endpoint
+          fetch('/api/users/role/lawyers'),
           fetch('/api/prosecutors'),
           fetch('/api/plaintiffs'),
           fetch('/api/opponents'),

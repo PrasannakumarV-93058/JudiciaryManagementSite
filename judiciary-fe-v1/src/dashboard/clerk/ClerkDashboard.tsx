@@ -1,48 +1,57 @@
-// ClerkDashboard.tsx
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, CalendarPlus, Gavel, Users } from "lucide-react";
+import { PlusCircle, CalendarPlus, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-
-
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 
 const ClerkDashboard = () => {
-const navigate = useNavigate();
-const actions = [
-  {
-    title: "Create New Case",
-    description: "Initiate a new case by entering all necessary case details.",
-    icon: <PlusCircle className="w-6 h-6 text-blue-600" />,
-    actionText: "Create Case",
-    onClick: () => {
-      // handle case creation
-      navigate("/dashboard/clerk/create-case");
+  const navigate = useNavigate();
+
+  const actions = [
+    {
+      title: "Create New Case",
+      description: "Initiate a new case by entering all necessary case details.",
+      icon: <PlusCircle className="w-6 h-6 text-blue-600" />,
+      actionText: "Create Case",
+      onClick: () => {
+        navigate("/dashboard/clerk/create-case");
+      },
     },
-  },
-  {
-    title: "Schedule Hearing",
-    description: "Set a date, time, and judge for an upcoming hearing.",
-    icon: <CalendarPlus className="w-6 h-6 text-green-600" />,
-    actionText: "Schedule",
-    onClick: () => {
-      navigate("/dashboard/clerk/schedule-hearing");
+    {
+      title: "Schedule Hearing",
+      description: "Set a date, time, and judge for an upcoming hearing.",
+      icon: <CalendarPlus className="w-6 h-6 text-green-600" />,
+      actionText: "Schedule",
+      onClick: () => {
+        navigate("/dashboard/clerk/schedule-hearing");
+      },
     },
-  },
-  {
-    title: "Create New User",
-    description: "create or update details for lawyers, plaintiffs, and opponents.",
-    icon: <Users className="w-6 h-6 text-purple-600" />,
-    actionText: "Manage",
-    onClick: () => {
-      // handle participant management
+    {
+      title: "Create New User",
+      description: "Create or update details for lawyers, plaintiffs, and opponents.",
+      icon: <Users className="w-6 h-6 text-purple-600" />,
+      actionText: "Manage",
+      onClick: () => {
+        // handle participant management
+      },
     },
-  },
-];
+  ];
 
   return (
     <div className="min-h-screen bg-slate-50 p-6">
       <h1 className="text-3xl font-bold text-slate-800 mb-8 text-center">Clerk Dashboard</h1>
+
+      {/* 3D Model Viewer */}
+      <div className="w-full h-96 mb-8">
+        <Canvas>
+          <ambientLight intensity={0.2} />
+          <directionalLight position={[100, 3, 20]} />
+          <Model />
+          <OrbitControls enableZoom={false} enablePan={true} />
+        </Canvas>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {actions.map((action, index) => (
           <Card key={index} className="hover:shadow-lg bg-white transition-shadow duration-300">
@@ -61,6 +70,13 @@ const actions = [
       </div>
     </div>
   );
+};
+
+// 3D Model Component
+const Model = () => {
+  const gltf = useGLTF("/court.glb"); // Path to the 3D model in the public directory
+  return <primitive object={gltf.scene} scale={1} position={[10, 0, 0]} />;
+  
 };
 
 export default ClerkDashboard;
