@@ -6,8 +6,9 @@ import CalendarPage from "../dashboard/judge/calender/calender";
 import HearingPage from "../dashboard/judge/hearings/hearings";
 import CasesPage from "../dashboard/judge/cases/CasesPage";
 import JudgeDashboard from "../dashboard/judge/judgeDashboard";
-import ClerkDashboard from "../dashboard/clerk/clerkDashboard";
+import ClerkDashboard from "../dashboard/clerk/ClerkDashboard";
 import ClerkCreate from "../dashboard/clerk/CreateCase";
+import ClerkCreateUser from "../dashboard/clerk/CreateUser";
 import ScheduleHearing from "../dashboard/clerk/ScheduleHearing";
 // Define type for Role
 export type Role = "judge" | "lawyer" | "clerk" | "prosecutor" | "client";
@@ -105,6 +106,12 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       path: `create-case`,
       icon: <Home className="h-5 w-5" />,
       element: <ClerkCreate/>,
+    },
+    {
+      title: "Create User",
+      path: `create-user`,
+      icon: <Home className="h-5 w-5" />,
+      element: <ClerkCreateUser/>,
     },
     {
       title: "schedule-hearing",

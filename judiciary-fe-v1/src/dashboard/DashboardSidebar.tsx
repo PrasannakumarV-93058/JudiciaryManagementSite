@@ -84,6 +84,11 @@ export function DashboardSidebar({ role }: SidebarProps) {
           icon: <FileText className="h-5 w-5" />,
         },
         {
+          title: "Create User",
+          href: `/dashboard/${role}/create-user`,
+          icon: <FileText className="h-5 w-5" />,
+        },
+        {
           title: "Court Schedule",
           href: `/dashboard/${role}/schedule-hearing`,
           icon: <Clock className="h-5 w-5" />,
