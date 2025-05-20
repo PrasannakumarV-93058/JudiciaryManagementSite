@@ -91,7 +91,7 @@ DB Architecture:
 3.Run the Application
 -->npm run start
 
-⚙️ Getting Started for Backend:
+⚙️ Getting Started for Backend:(USE JAVA 17)
 1. Clone the Repo
 -->git clone (https://github.com/PrasannakumarV-93058/JudiciaryManagementSite.git)
 
