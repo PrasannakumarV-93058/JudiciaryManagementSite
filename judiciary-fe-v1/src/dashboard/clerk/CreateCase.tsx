@@ -30,22 +30,28 @@ const ClerkCreate: React.FC = () => {
     opponentId: 0,
   });
 
-  const [judges, setJudges] = useState<{ id: number; name: string }[]>([]);
-  const [lawyers, setLawyers] = useState<{ id: number; name: string }[]>([]);
-  const [prosecutors, setProsecutors] = useState<{ id: number; name: string }[]>([]);
-  const [plaintiffs, setPlaintiffs] = useState<{ id: number; name: string }[]>([]);
-  const [opponents, setOpponents] = useState<{ id: number; name: string }[]>([]);
+  const [judges, setJudges] = useState<{ id: number; fullName: string }[]>([]);
+  const [lawyers, setLawyers] = useState<{ id: number; fullName: string  }[]>([]);
+  const [prosecutors, setProsecutors] = useState<{ id: number; fullName: string  }[]>([]);
+  const [plaintiffs, setPlaintiffs] = useState<{ id: number; fullName: string  }[]>([]);
+  const [opponents, setOpponents] = useState<{ id: number; fullName: string  }[]>([]);
 
   useEffect(() => {
     // Fetch data for dropdowns
     const fetchDropdownData = async () => {
       try {
+        const token = sessionStorage.getItem('jwtToken'); // Retrieve JWT token from sessionStorage
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        };
+
         const [judgesRes, lawyersRes, prosecutorsRes, plaintiffsRes, opponentsRes] = await Promise.all([
-          fetch('/api/users/role/judge'), // Replace with your API endpoint
-          fetch('/api/users/role/lawyers'),
-          fetch('/api/prosecutors'),
-          fetch('/api/plaintiffs'),
-          fetch('/api/opponents'),
+          fetch('http://localhost:8080/api/users/role/judge', { headers }),
+          fetch('http://localhost:8080/api/users/role/lawyer', { headers }),
+          fetch('http://localhost:8080/api/users/role/lawyer', { headers }),
+          fetch('http://localhost:8080/api/users/role/client', { headers }),
+          fetch('http://localhost:8080/api/users/role/client', { headers }),
         ]);
 
         setJudges(await judgesRes.json());
@@ -158,7 +164,7 @@ const ClerkCreate: React.FC = () => {
                   <option value="" disabled>Select Judge</option>
                   {judges.map((judge) => (
                     <option key={judge.id} value={judge.id}>
-                      {judge.name}
+                      {judge.fullName}
                     </option>
                   ))}
                 </select>
@@ -175,7 +181,7 @@ const ClerkCreate: React.FC = () => {
                   <option value="" disabled>Select Lawyer</option>
                   {lawyers.map((lawyer) => (
                     <option key={lawyer.id} value={lawyer.id}>
-                      {lawyer.name}
+                      {lawyer.fullName}
                     </option>
                   ))}
                 </select>
@@ -191,7 +197,7 @@ const ClerkCreate: React.FC = () => {
                   <option value="" disabled>Select Prosecutor</option>
                   {prosecutors.map((prosecutor) => (
                     <option key={prosecutor.id} value={prosecutor.id}>
-                      {prosecutor.name}
+                      {prosecutor.fullName}
                     </option>
                   ))}
                 </select>
@@ -208,7 +214,7 @@ const ClerkCreate: React.FC = () => {
                   <option value="" disabled>Select Plaintiff</option>
                   {plaintiffs.map((plaintiff) => (
                     <option key={plaintiff.id} value={plaintiff.id}>
-                      {plaintiff.name}
+                      {plaintiff.fullName}
                     </option>
                   ))}
                 </select>
@@ -224,7 +230,7 @@ const ClerkCreate: React.FC = () => {
                   <option value="" disabled>Select Opponent</option>
                   {opponents.map((opponent) => (
                     <option key={opponent.id} value={opponent.id}>
-                      {opponent.name}
+                      {opponent.fullName}
                     </option>
                   ))}
                 </select>

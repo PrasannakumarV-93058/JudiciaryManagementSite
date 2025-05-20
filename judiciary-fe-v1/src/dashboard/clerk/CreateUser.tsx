@@ -4,62 +4,25 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { PlusCircle } from "lucide-react";
 interface CaseForm {
-  category: string;
-  status: string;
-  startDate: string;
-  endDate: string;
-  nextHearing: string;
-  judgeId: number;
-  lawyerId: number;
-  prosecutorId: number;
-  plaintiffId: number;
-  opponentId: number;
+  fullName: string;
+  username: string;
+  role: string;
+  email: string;
+  password: string;
+  phone: string;
 }
 
 const ClerkCreateUser: React.FC = () => {
   const [formData, setFormData] = useState<CaseForm>({
-    category: '',
-    status: '',
-    startDate: '',
-    endDate: '',
-    nextHearing: '',
-    judgeId: 0,
-    lawyerId: 0,
-    prosecutorId: 0,
-    plaintiffId: 0,
-    opponentId: 0,
+    fullName: '',
+    username: '',
+    role: '',
+    email: '',
+    password: '',
+    phone: '',
+
   });
 
-  const [judges, setJudges] = useState<{ id: number; name: string }[]>([]);
-  const [lawyers, setLawyers] = useState<{ id: number; name: string }[]>([]);
-  const [prosecutors, setProsecutors] = useState<{ id: number; name: string }[]>([]);
-  const [plaintiffs, setPlaintiffs] = useState<{ id: number; name: string }[]>([]);
-  const [opponents, setOpponents] = useState<{ id: number; name: string }[]>([]);
-
-  useEffect(() => {
-    // Fetch data for dropdowns
-    const fetchDropdownData = async () => {
-      try {
-        const [judgesRes, lawyersRes, prosecutorsRes, plaintiffsRes, opponentsRes] = await Promise.all([
-          fetch('/api/users/role/judge'), // Replace with your API endpoint
-          fetch('/api/users/role/lawyers'),
-          fetch('/api/prosecutors'),
-          fetch('/api/plaintiffs'),
-          fetch('/api/opponents'),
-        ]);
-
-        setJudges(await judgesRes.json());
-        setLawyers(await lawyersRes.json());
-        setProsecutors(await prosecutorsRes.json());
-        setPlaintiffs(await plaintiffsRes.json());
-        setOpponents(await opponentsRes.json());
-      } catch (error) {
-        console.error('Error fetching dropdown data:', error);
-      }
-    };
-
-    fetchDropdownData();
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -69,10 +32,33 @@ const ClerkCreateUser: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submitting Case:', formData);
-    // TODO: Replace with actual API call
+  
+    try {
+      const token = sessionStorage.getItem('jwtToken'); // Retrieve JWT token from sessionStorage
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      };
+  
+      const response = await fetch('http://localhost:8080/api/users/register', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(formData), // Send form data as JSON
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to create user. Please try again.');
+      }
+  
+      const data = await response.json();
+      console.log('User created successfully:', data);
+      alert('User created successfully!');
+    } catch (error) {
+      console.error('Error creating user:', error);
+
+    }
   };
 
   return (
@@ -86,127 +72,86 @@ const ClerkCreateUser: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="status">ID</Label>
-                <input 
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-        type="ID" placeholder='Enter User ID' />
-              </div>
-              <div>
-                <Label htmlFor="startDate">Start Date</Label>
+                <Label htmlFor="fullName">Full Name</Label>
                 <input
-                  type="date"
-                  name="startDate"
-                  value={formData.startDate}
-                  onChange={handleChange}
-                  required
+                  name="fullName"
                   className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  type="text"
+                  placeholder="Enter Full Name"
+                  value={formData.fullName}
+                  onChange={handleChange} // Bind onChange to update state
                 />
               </div>
+
               <div>
-                <Label htmlFor="endDate">End Date</Label>
+                <Label htmlFor="username">User Name</Label>
                 <input
-                  type="date"
-                  name="endDate"
-                  value={formData.endDate}
-                  onChange={handleChange}
+                  name="username"
                   className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  type="text"
+                  placeholder="Enter User Name"
+                  value={formData.username}
+                  onChange={handleChange} // Bind onChange to update state
                 />
               </div>
+
               <div>
-                <Label htmlFor="nextHearing">Next Hearing</Label>
-                <input
-                  type="date"
-                  name="nextHearing"
-                  value={formData.nextHearing}
-                  onChange={handleChange}
+                <Label htmlFor="role">Role</Label>
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange} // Bind onChange to update state
+                  required
                   className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option value="" disabled>
+                    Select Role
+                  </option>
+                  <option value="judge">Judge</option>
+                  <option value="client">Client</option>
+                  <option value="lawyer">Lawyer</option>
+                </select>
+              </div>
+
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <input
+                  name="email"
+                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  type="email"
+                  placeholder="Enter Email"
+                  value={formData.email}
+                  onChange={handleChange} // Bind onChange to update state
                 />
               </div>
+
               <div>
-                <Label htmlFor="judgeId">Judge</Label>
-                <select
-                  name="judgeId"
-                  value={formData.judgeId}
-                  onChange={handleChange}
-                  required
+                <Label htmlFor="password">Password</Label>
+                <input
+                  name="password"
                   className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                >
-                  <option value="" disabled>Select Judge</option>
-                  {judges.map((judge) => (
-                    <option key={judge.id} value={judge.id}>
-                      {judge.name}
-                    </option>
-                  ))}
-                </select>
+                  type="password"
+                  placeholder="Enter Password"
+                  value={formData.password}
+                  onChange={handleChange} // Bind onChange to update state
+                />
               </div>
+
               <div>
-                <Label htmlFor="lawyerId">Lawyer</Label>
-                <select
-                  name="lawyerId"
-                  value={formData.lawyerId}
-                  onChange={handleChange}
-                  required
+                <Label htmlFor="phone">Phone</Label>
+                <input
+                  name="phone"
                   className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                >
-                  <option value="" disabled>Select Lawyer</option>
-                  {lawyers.map((lawyer) => (
-                    <option key={lawyer.id} value={lawyer.id}>
-                      {lawyer.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <Label htmlFor="prosecutorId">Prosecutor</Label>
-                <select
-                  name="prosecutorId"
-                  value={formData.prosecutorId}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                >
-                  <option value="" disabled>Select Prosecutor</option>
-                  {prosecutors.map((prosecutor) => (
-                    <option key={prosecutor.id} value={prosecutor.id}>
-                      {prosecutor.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <Label htmlFor="plaintiffId">Plaintiff</Label>
-                <select
-                  name="plaintiffId"
-                  value={formData.plaintiffId}
-                  onChange={handleChange}
-                  required
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                >
-                  <option value="" disabled>Select Plaintiff</option>
-                  {plaintiffs.map((plaintiff) => (
-                    <option key={plaintiff.id} value={plaintiff.id}>
-                      {plaintiff.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <Label htmlFor="opponentId">Opponent</Label>
-                <select
-                  name="opponentId"
-                  value={formData.opponentId}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                >
-                  <option value="" disabled>Select Opponent</option>
-                  {opponents.map((opponent) => (
-                    <option key={opponent.id} value={opponent.id}>
-                      {opponent.name}
-                    </option>
-                  ))}
-                </select>
+                  type="text"
+                  placeholder="Enter Phone"
+                  value={formData.phone}
+                  onChange={handleChange} // Bind onChange to update state
+                />
               </div>
             </div>
-            <Button type="submit" className="bg-blue-100 mt-4">Create Case</Button>
+            <Button type="submit" className="bg-blue-100 mt-4">
+              Create User
+            </Button>
           </form>
         </CardContent>
       </Card>
