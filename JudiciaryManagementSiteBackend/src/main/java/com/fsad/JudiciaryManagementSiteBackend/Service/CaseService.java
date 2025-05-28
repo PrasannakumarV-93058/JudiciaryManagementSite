@@ -13,7 +13,7 @@ import java.util.Optional;
 public class CaseService {
 
 	@Autowired
-	private CaseRepository caseRepository;
+	public CaseRepository caseRepository;
 
 	// Method to create a new case
 	public Case createCase(Case newCase) {
