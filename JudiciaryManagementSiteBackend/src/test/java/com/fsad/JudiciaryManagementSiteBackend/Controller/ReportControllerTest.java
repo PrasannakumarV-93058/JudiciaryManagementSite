@@ -27,7 +27,7 @@ public class ReportControllerTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        sampleReport = new CaseDisplayDTO(); // Fill fields as needed
+        sampleReport = new CaseDisplayDTO();  // Fill fields as needed
     }
 
     // -----------------------------
@@ -49,11 +49,12 @@ public class ReportControllerTest {
     public void testGetCaseReports_EmptyResult_ThrowsNotFound() {
         when(reportService.generateCaseDisplayReports()).thenReturn(Collections.emptyList());
 
-        ReportController.ReportNotFoundException ex = assertThrows(
-                ReportController.ReportNotFoundException.class,
-                () -> reportController.getCaseReports());
+        ReportController.ReportGenerationException ex = assertThrows(
+            ReportController.ReportGenerationException.class,
+            () -> reportController.getCaseReports()
+        );
 
-        assertEquals("No case reports available.", ex.getMessage());
+        assertEquals("Error generating case reports: No case reports available.", ex.getMessage());
     }
 
     @Test
@@ -61,8 +62,9 @@ public class ReportControllerTest {
         when(reportService.generateCaseDisplayReports()).thenThrow(new RuntimeException("DB connection failed"));
 
         ReportController.ReportGenerationException ex = assertThrows(
-                ReportController.ReportGenerationException.class,
-                () -> reportController.getCaseReports());
+            ReportController.ReportGenerationException.class,
+            () -> reportController.getCaseReports()
+        );
 
         assertTrue(ex.getMessage().contains("Error generating case reports: DB connection failed"));
     }
@@ -86,11 +88,12 @@ public class ReportControllerTest {
     public void testGetJudgementSummaries_EmptyResult_ThrowsNotFound() {
         when(reportService.generateCaseDisplayReports()).thenReturn(Collections.emptyList());
 
-        ReportController.ReportNotFoundException ex = assertThrows(
-                ReportController.ReportNotFoundException.class,
-                () -> reportController.getJudgementSummaries());
+        ReportController.ReportGenerationException ex = assertThrows(
+            ReportController.ReportGenerationException.class,
+            () -> reportController.getJudgementSummaries()
+        );
 
-        assertEquals("No judgment summaries available.", ex.getMessage());
+        assertEquals("Error generating judgment summaries: No judgment summaries available.", ex.getMessage());
     }
 
     @Test
@@ -98,8 +101,9 @@ public class ReportControllerTest {
         when(reportService.generateCaseDisplayReports()).thenThrow(new RuntimeException("Null pointer"));
 
         ReportController.ReportGenerationException ex = assertThrows(
-                ReportController.ReportGenerationException.class,
-                () -> reportController.getJudgementSummaries());
+            ReportController.ReportGenerationException.class,
+            () -> reportController.getJudgementSummaries()
+        );
 
         assertTrue(ex.getMessage().contains("Error generating judgment summaries: Null pointer"));
     }
