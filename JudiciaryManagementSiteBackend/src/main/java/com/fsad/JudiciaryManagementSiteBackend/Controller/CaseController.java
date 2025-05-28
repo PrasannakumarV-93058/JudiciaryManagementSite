@@ -2,12 +2,14 @@ package com.fsad.JudiciaryManagementSiteBackend.Controller;
 
 import com.fsad.JudiciaryManagementSiteBackend.DTO.CaseDisplayDTO;
 import com.fsad.JudiciaryManagementSiteBackend.DTO.UserDisplayDTO;
+import com.fsad.JudiciaryManagementSiteBackend.DTO.NextHearingUpdateDTO;
 import com.fsad.JudiciaryManagementSiteBackend.Entity.Case;
 import com.fsad.JudiciaryManagementSiteBackend.Entity.User;
 import com.fsad.JudiciaryManagementSiteBackend.Repository.CaseRepository;
 import com.fsad.JudiciaryManagementSiteBackend.Repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -119,6 +121,15 @@ public class CaseController {
 
 		// Save the case
 		return caseRepository.save(caseRequest);
+	}
+
+	@PatchMapping("/{caseId}/next-hearing")
+	@Operation(summary = "Update the next hearing date for a case (Clerk/Judge only)")
+	public Case updateNextHearingDate(@PathVariable Integer caseId, @RequestBody NextHearingUpdateDTO dto) {
+		return caseRepository.findById(caseId).map(c -> {
+			c.setNextHearing(dto.getNextHearing());
+			return caseRepository.save(c);
+		}).orElseThrow(() -> new IllegalArgumentException("Case not found with ID: " + caseId));
 	}
 
 	private User fetchUserById(User user) {
