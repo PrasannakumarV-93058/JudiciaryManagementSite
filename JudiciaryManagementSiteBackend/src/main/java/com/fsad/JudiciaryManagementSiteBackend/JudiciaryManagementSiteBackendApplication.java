@@ -31,7 +31,7 @@ public class JudiciaryManagementSiteBackendApplication {
 				User firstUser = User.builder()
 						.username("admin")
 						.password(passwordEncoder.encode("admin123")) // Encrypt the password
-						.role("ROLE_CLERK")
+						.role("ROLE_CLERK") // Give admin full access
 						.build();
 				userRepository.save(firstUser);
 				System.out.println("First user added to the database: " + firstUser.getUsername());

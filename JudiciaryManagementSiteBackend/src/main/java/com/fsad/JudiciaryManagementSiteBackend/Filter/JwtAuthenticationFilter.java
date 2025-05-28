@@ -23,6 +23,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		if (shouldNotFilter(request)) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 		String token = getJwtFromRequest(request);
 
 		if (token != null && jwtService.isValidToken(token)) {
@@ -35,9 +39,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		} else {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			return;
 		}
 
 		filterChain.doFilter(request, response);
+	}
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		String path = request.getServletPath();
+		return path.startsWith("/swagger-ui") ||
+			path.startsWith("/v3/api-docs") ||
+			path.startsWith("/swagger-resources") ||
+			path.equals("/swagger-ui.html") ||
+			path.equals("/api/auth/login"); // Allow login endpoint to bypass JWT filter
 	}
 
 	private String getJwtFromRequest(HttpServletRequest request) {
