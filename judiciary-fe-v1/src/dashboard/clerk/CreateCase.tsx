@@ -3,6 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { PlusCircle } from "lucide-react";
+import axios from "axios";
 interface CaseForm {
   category: string;
   status: string;
@@ -75,10 +76,27 @@ const ClerkCreate: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Submitting Case:', formData);
-    // TODO: Replace with actual API call
+  
+    try {
+      const token = sessionStorage.getItem('jwtToken'); 
+      const response = await axios.post(
+        "http://localhost:8080/api/cases/createcase",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Case created successfully:", response.data);
+  
+    } catch (error) {
+      console.error("Error creating case:", error);
+    }
   };
 
   return (

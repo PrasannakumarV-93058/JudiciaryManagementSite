@@ -133,13 +133,14 @@ const ClerkDashboard = () => {
               </div>
             ) : (
               <ScrollArea className="mt-10 space-y-6 pr-4">
-      <h1 className="text-3xl font-bold text-slate-800 mb-8 text-center">Explore Cases</h1>
-      <Button
+                <Button
       onClick={fetchCases}
-      className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md"
+      className="bg-gray-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-md"
     >
       Refresh
     </Button>
+      <h1 className="text-3xl font-bold text-slate-800 mb-8 text-center">Explore Cases</h1>
+      
 
   {cases.map((c) => (
     <Card key={c.id} className="shadow-sm border border-slate-300 bg-white mb-5">
