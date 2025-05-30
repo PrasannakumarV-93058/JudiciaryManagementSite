@@ -24,7 +24,7 @@ public class ReportController {
 	// Endpoint to generate case reports
 	@GetMapping("/cases")
 	@Operation(summary = "Generate reports on cases and results")
-	@PreAuthorize("hasRole('Admin') or hasRole('Clerk')")  // Restrict to specific roles
+	@PreAuthorize("hasRole('CLERK')")  // Restrict to specific roles
 	public List<CaseDisplayDTO> getCaseReports() {
 		try {
 			List<CaseDisplayDTO> caseReports = reportService.generateCaseDisplayReports();

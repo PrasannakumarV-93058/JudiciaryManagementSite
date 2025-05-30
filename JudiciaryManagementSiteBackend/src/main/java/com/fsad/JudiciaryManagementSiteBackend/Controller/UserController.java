@@ -35,15 +35,13 @@ public class UserController {
 		};
 	}
 
-
-
+	@PreAuthorize("hasRole('CLERK')")
 	@GetMapping("/role/{role}")
 	public List<IdFetchDTO> getUsersByRole(@PathVariable String role) {
 		return userRepository.findByRoleIgnoreCase(role).stream()
 				.map(user -> new IdFetchDTO(user.getId(), user.getFullName()))
 				.collect(Collectors.toList());
 	}
-
 
 	@PreAuthorize("hasRole('CLERK')")
 	@Operation(summary = "Get all users for display with unified roles")
@@ -78,16 +76,14 @@ public class UserController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 
-
-
-	@Operation(summary = "Create new user")
 	@PostMapping("/register")
+	@Operation(summary = "Create new user")
 	public User createUser(@RequestBody User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword())); // Always encode before saving
 		return userRepository.save(user);
 	}
 
-
+	@PreAuthorize("hasRole('CLERK')")
 	@Operation(summary = "Update user by ID")
 	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User updatedUser) {
@@ -97,7 +93,7 @@ public class UserController {
 		}).orElse(ResponseEntity.notFound().build());
 	}
 
-
+	@PreAuthorize("hasRole('CLERK')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
 		return userRepository.findById(id).map(user -> {
@@ -105,7 +101,5 @@ public class UserController {
 			return ResponseEntity.noContent().<Void>build();
 		}).orElse(ResponseEntity.notFound().build());
 	}
-
-
 
 }

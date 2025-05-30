@@ -1,11 +1,11 @@
 meta {
-  name: Endpoint to generate case reports
+  name: Lawyer views case history
   type: http
-  seq: 1
+  seq: 7
 }
 
 get {
-  url: http://localhost:8080/api/reports/judgements
+  url: http://localhost:8080/api/cases/1/user?role=LAWYER
   body: none
   auth: bearer
 }

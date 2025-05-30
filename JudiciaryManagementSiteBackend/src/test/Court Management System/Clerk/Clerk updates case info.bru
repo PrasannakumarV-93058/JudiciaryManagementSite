@@ -1,0 +1,22 @@
+meta {
+  name: Clerk updates case info
+  type: http
+  seq: 10
+}
+
+put {
+  url: http://localhost:8080/api/cases/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{clerk_token}}
+}
+
+body:json {
+  {
+    "status": "Closed",
+    "endDate": "2025-06-20T15:00:00"
+  }
+}

@@ -1,0 +1,355 @@
+meta {
+  name: Register new user
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8080/api/users/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "judge1",
+    "fullName": "Judge One",
+    "email": "judge1@example.com",
+    "password": "judgepass",
+    "role": "JUDGE"
+  }
+}
+
+---
+
+meta {
+  name: Login as judge
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/api/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "judge1",
+    "password": "judgepass"
+  }
+}
+
+---
+
+meta {
+  name: Create a new case (Clerk)
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/api/cases/createcase
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{clerk_token}}
+}
+
+body:json {
+  {
+    "category": "Civil",
+    "status": "Open",
+    "startDate": "2025-05-30T10:00:00",
+    "description": "Property dispute",
+    "judge": { "id": 1 },
+    "lawyer": { "id": 2 },
+    "prosecutor": { "id": 3 },
+    "plaintiff": { "id": 4 },
+    "opponent": { "id": 5 }
+  }
+}
+
+---
+
+meta {
+  name: Judge views case details
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:8080/api/judges/1/cases
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{judge_token}}
+}
+
+---
+
+meta {
+  name: Judge schedules next hearing
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:8080/api/cases/1/next-hearing
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{judge_token}}
+}
+
+body:json {
+  {
+    "nextHearing": "2025-06-15T10:00:00"
+  }
+}
+
+---
+
+meta {
+  name: Lawyer views their cases
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:8080/api/cases/users/2
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{lawyer_token}}
+}
+
+---
+
+meta {
+  name: Lawyer views case history
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://localhost:8080/api/cases/1/user?role=LAWYER
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{lawyer_token}}
+}
+
+---
+
+meta {
+  name: Lawyer views next hearing
+  type: http
+  seq: 8
+}
+
+get {
+  url: http://localhost:8080/api/cases/1
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{lawyer_token}}
+}
+
+---
+
+meta {
+  name: Lawyer views won/lost cases
+  type: http
+  seq: 9
+}
+
+get {
+  url: http://localhost:8080/api/advocates/2/cases
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{lawyer_token}}
+}
+
+---
+
+meta {
+  name: Clerk updates case info
+  type: http
+  seq: 10
+}
+
+put {
+  url: http://localhost:8080/api/cases/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{clerk_token}}
+}
+
+body:json {
+  {
+    "status": "Closed",
+    "endDate": "2025-06-20T15:00:00"
+  }
+}
+
+---
+
+meta {
+  name: Clerk updates judge details
+  type: http
+  seq: 11
+}
+
+post {
+  url: http://localhost:8080/api/clerks/judges
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{clerk_token}}
+}
+
+body:json {
+  {
+    "username": "judge2",
+    "fullName": "Judge Two",
+    "email": "judge2@example.com",
+    "password": "judgepass2",
+    "role": "JUDGE"
+  }
+}
+
+---
+
+meta {
+  name: Clerk uploads day-wise proceedings
+  type: http
+  seq: 12
+}
+
+post {
+  url: http://localhost:8080/api/clerks/cases/1/proceedings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{clerk_token}}
+}
+
+body:json {
+  {
+    "date": "2025-06-01T10:00:00",
+    "description": "Hearing started."
+  }
+}
+
+---
+
+meta {
+  name: Clerk updates status and judgement
+  type: http
+  seq: 13
+}
+
+put {
+  url: http://localhost:8080/api/clerks/cases/1/status
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{clerk_token}}
+}
+
+body:json {
+  {
+    "status": "Closed",
+    "judgment": "Case resolved in favor of plaintiff."
+  }
+}
+
+---
+
+meta {
+  name: Clerk uploads lawyer details
+  type: http
+  seq: 14
+}
+
+post {
+  url: http://localhost:8080/api/clerks/lawyers
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{clerk_token}}
+}
+
+body:json {
+  {
+    "username": "lawyer2",
+    "fullName": "Lawyer Two",
+    "email": "lawyer2@example.com",
+    "password": "lawyerpass2",
+    "role": "LAWYER"
+  }
+}
+
+---
+
+meta {
+  name: Generate case reports
+  type: http
+  seq: 15
+}
+
+get {
+  url: http://localhost:8080/api/reports/cases
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{clerk_token}}
+}
+
+---
+
+meta {
+  name: Generate judgement summaries
+  type: http
+  seq: 16
+}
+
+get {
+  url: http://localhost:8080/api/reports/judgements
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{clerk_token}}
+}
