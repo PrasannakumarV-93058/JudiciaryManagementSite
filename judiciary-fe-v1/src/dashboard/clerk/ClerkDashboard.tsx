@@ -1,7 +1,7 @@
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from 'react';
-import { PlusCircle, CalendarPlus, Users } from "lucide-react";
+import { PlusCircle, CalendarPlus, Users,Gavel,Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import axios from "axios";
@@ -96,11 +96,20 @@ const ClerkDashboard = () => {
     {
       title: "Edit User Info",
       description: "Make changes to User Information",
-      icon: <PlusCircle className="w-6 h-6 text-blue-600" />,
+      icon: <Settings className="w-6 h-6 text-blue-600" />,
       actionText: "Edit User",
       buttonClass: "bg-blue-600 hover:bg-blue-700",
       onClick: () => {
         navigate("/dashboard/clerk/edit-user");
+      },
+    },
+    {
+      title: "Update Case Status",
+      description: "Log regular case updates entering all necessary case details.",
+      icon: <Gavel className="w-6 h-6 text-blue-600" />,
+      actionText: "Create Case",
+      onClick: () => {
+        navigate("/dashboard/clerk/create-case");
       },
     },
   ];

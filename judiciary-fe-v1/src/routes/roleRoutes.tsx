@@ -143,6 +143,12 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       icon: <FileSearch className="h-5 w-5" />,
       element: <FileSearch name="Document Management" />,
     },
+    {
+      title: "Update Status",
+      path: "documents",
+      icon: <FileSearch className="h-5 w-5" />,
+      element: <FileSearch name="Document Management" />,
+    },
     
   ],
   prosecutor: [

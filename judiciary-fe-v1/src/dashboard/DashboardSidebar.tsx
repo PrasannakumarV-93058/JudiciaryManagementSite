@@ -16,7 +16,9 @@ import {
   BookOpen,
   MessageSquare,
   Clock,
-  FileSearch,
+  FileSearch
+,PlusCircle, CalendarPlus,Settings,
+User
   // Settings, // imported but not used; can remove if unused
 } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
@@ -104,17 +106,22 @@ export function DashboardSidebar({ role }: SidebarProps) {
         {
           title: "Case Filing",
           href: `/dashboard/${role}/create-case`,
-          icon: <FileText className="h-5 w-5" />,
+          icon: <PlusCircle className="h-5 w-5" />,
         },
         {
           title: "Create User",
           href: `/dashboard/${role}/create-user`,
-          icon: <FileText className="h-5 w-5" />,
+          icon: <User className="h-5 w-5" />,
         },
         {
           title: "Schedule Hearing",
           href: `/dashboard/${role}/schedule-hearing`,
           icon: <Clock className="h-5 w-5" />,
+        },
+        {
+          title: "Update Status",
+          href: `/dashboard/${role}/update-status`,
+          icon: <FileText className="h-5 w-5" />,
         },
       ],
       prosecutor: [
@@ -305,7 +312,7 @@ function DesktopSidebar({
           </div>
         </div>
         <Button variant="outline" className="w-full mt-2 justify-start" asChild>
-          <Link to="/login">
+          <Link to="/">
             <LogOut className="mr-2 h-4 w-4" />
             Logout
           </Link>
