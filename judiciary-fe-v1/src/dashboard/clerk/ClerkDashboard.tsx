@@ -141,15 +141,6 @@ const ClerkDashboard = () => {
     <div className="min-h-screen bg-slate-50 p-6">
       <h1 className="text-3xl font-bold text-slate-800 mb-8 text-center">Clerk Dashboard</h1>
 
-      {/* 3D Model Viewer */}
-      <div className="w-full h-96 mb-8">
-        <Canvas>
-          <ambientLight intensity={0.2} />
-          <directionalLight position={[100, 3, 20]} />
-          <Model />
-          <OrbitControls enableZoom={false} enablePan={true} />
-        </Canvas>
-      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {actions.map((action, index) => (
@@ -205,10 +196,10 @@ const ClerkDashboard = () => {
 };
 
 // 3D Model Component
-const Model = () => {
-  const gltf = useGLTF("/court.glb"); // Path to the 3D model in the public directory
-  return <primitive object={gltf.scene} scale={1} position={[10, 0, 0]} />;
+// const Model = () => {
+//   const gltf = useGLTF("/court.glb"); // Path to the 3D model in the public directory
+//   return <primitive object={gltf.scene} scale={1} position={[10, 0, 0]} />;
   
-};
+// };
 
 export default ClerkDashboard;

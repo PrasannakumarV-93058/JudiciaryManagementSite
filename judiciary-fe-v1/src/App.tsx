@@ -5,6 +5,7 @@ import RegisterPage from './register/register';
 import DashboardLayout from './dashboard/DashboardLayout';
 import ErrorBoundary from "./components/ui/ErrorBoundary";
 import { roleRoutes, Role } from './routes/roleRoutes';
+import PrivateRoute from './components/ui/PrivateRoute';
 
 function RoleBasedRoutes() {
   const { role } = useParams();
@@ -36,8 +37,15 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
-          {/* Dynamically render based on role */}
-          <Route path="/dashboard/:role/*" element={<RoleBasedRoutes />} />
+          {/* Protected dashboard route */}
+          <Route
+            path="/dashboard/:role/*"
+            element={
+              <PrivateRoute>
+                <RoleBasedRoutes />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </ErrorBoundary>
     </BrowserRouter>
