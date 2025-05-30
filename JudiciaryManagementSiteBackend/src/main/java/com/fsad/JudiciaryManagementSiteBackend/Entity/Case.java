@@ -24,6 +24,7 @@ public class Case {
 	private LocalDateTime endDate;
 	private LocalDateTime nextHearing;
 	private LocalDateTime createdAt;
+	private String description;
 
 	@ManyToOne
 	@JoinColumn(name = "judge_id")

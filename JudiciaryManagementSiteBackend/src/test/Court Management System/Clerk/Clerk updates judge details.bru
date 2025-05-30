@@ -1,11 +1,11 @@
 meta {
-  name: Register new user
+  name: Clerk updates judge details
   type: http
-  seq: 1
+  seq: 11
 }
 
 post {
-  url: http://localhost:8080/api/users/register
+  url: http://localhost:8080/api/clerks/judges
   body: json
   auth: bearer
 }
@@ -16,12 +16,10 @@ auth:bearer {
 
 body:json {
   {
-    "username": "NewUser",
-    "fullName": "NewUser",
-    "email": "NewUser@example.com",
-    "password": "NewUser",
-    "role": "JUDGE",
-    "phone": "+91-9744333441"
+    "username": "judge2",
+    "fullName": "Judge Two",
+    "email": "judge2@example.com",
+    "password": "judgepass2",
+    "role": "JUDGE"
   }
-  
 }

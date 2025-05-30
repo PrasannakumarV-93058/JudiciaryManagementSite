@@ -1,11 +1,11 @@
 meta {
-  name: Register new user
+  name: Judge schedules next hearing
   type: http
-  seq: 1
+  seq: 5
 }
 
-post {
-  url: http://localhost:8080/api/users/register
+patch {
+  url: http://localhost:8080/api/cases/1/next-hearing
   body: json
   auth: bearer
 }
@@ -16,12 +16,6 @@ auth:bearer {
 
 body:json {
   {
-    "username": "NewUser",
-    "fullName": "NewUser",
-    "email": "NewUser@example.com",
-    "password": "NewUser",
-    "role": "JUDGE",
-    "phone": "+91-9744333441"
+    "nextHearing": "2025-06-15T10:00:00"
   }
-  
 }

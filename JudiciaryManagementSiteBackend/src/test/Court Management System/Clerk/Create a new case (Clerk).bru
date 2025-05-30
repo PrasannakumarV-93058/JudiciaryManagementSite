@@ -1,0 +1,29 @@
+meta {
+  name: Create a new case (Clerk)
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/api/cases/createcase
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJDTEVSSyIsImlhdCI6MTc0ODYxMjE5MSwiZXhwIjoxNzQ4Njk4NTkxfQ.C7Spq3JNSC8wDPaXIltxIEibf0cFC-2BO7e4xn172ve2tdeBZCxUCDi6ojSMYq1BujNFNbrJxRwHBn_LQJljgA
+}
+
+body:json {
+  {
+    "category": "Civil",
+    "status": "Open",
+    "startDate": "2025-05-30T10:00:00",
+    "description": "Property dispute",
+    "judge": { "id": 1 },
+    "lawyer": { "id": 2 },
+    "prosecutor": { "id": 3 },
+    "plaintiff": { "id": 4 },
+    "opponent": { "id": 5 }
+  }
+}

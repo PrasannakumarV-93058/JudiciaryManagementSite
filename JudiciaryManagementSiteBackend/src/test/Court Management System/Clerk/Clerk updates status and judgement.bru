@@ -1,11 +1,11 @@
 meta {
-  name: Register new user
+  name: Clerk updates status and judgement
   type: http
-  seq: 1
+  seq: 13
 }
 
-post {
-  url: http://localhost:8080/api/users/register
+put {
+  url: http://localhost:8080/api/clerks/cases/1/status
   body: json
   auth: bearer
 }
@@ -16,12 +16,7 @@ auth:bearer {
 
 body:json {
   {
-    "username": "NewUser",
-    "fullName": "NewUser",
-    "email": "NewUser@example.com",
-    "password": "NewUser",
-    "role": "JUDGE",
-    "phone": "+91-9744333441"
+    "status": "Closed",
+    "judgment": "Case resolved in favor of plaintiff."
   }
-  
 }
