@@ -150,7 +150,7 @@ const ClerkDashboard = () => {
           <div><span className="font-medium">Category:</span> {c.category}</div>
           <div><span className="font-medium">Status:</span> {c.status.trim()}</div>
           <div><span className="font-medium">Start Date:</span> {new Date(c.startDate).toLocaleDateString()}</div>
-          <div><span className="font-medium">Next Hearing:</span> {c.nextHearing ? new Date(c.nextHearing).toLocaleDateString() : '-'}</div>
+          <div><span className="font-medium">Next Hearing:</span> {c.nextHearing ? new Date(c.nextHearing).toLocaleDateString() : 'Not Disclosed'}</div>
           <div><span className="font-medium">Judge:</span> {c.judgeName || '-'}</div>
           <div className="col-span-full">
             <span className="font-medium">Advocates:</span> {c.advocates.map(a => a.fullName).join(', ')}

@@ -179,7 +179,7 @@ const ClerkCreate: React.FC = () => {
                 <Label htmlFor="judge">Judge</Label>
                 <select
                   name="judge"
-                  value={formData.judge.id}
+                  value={formData.judge.id || ""}
                   onChange={handleChange}
                   required
                   className="w-full border rounded px-3 py-2"
@@ -194,7 +194,7 @@ const ClerkCreate: React.FC = () => {
                 <Label htmlFor="lawyer">Lawyer</Label>
                 <select
                   name="lawyer"
-                  value={formData.lawyer.id}
+                  value={formData.lawyer.id || ""}
                   onChange={handleChange}
                   required
                   className="w-full border rounded px-3 py-2"
@@ -209,7 +209,7 @@ const ClerkCreate: React.FC = () => {
                 <Label htmlFor="prosecutor">Prosecutor</Label>
                 <select
                   name="prosecutor"
-                  value={formData.prosecutor.id}
+                  value={formData.prosecutor.id || ""}
                   onChange={handleChange}
                   className="w-full border rounded px-3 py-2"
                 >
@@ -223,7 +223,7 @@ const ClerkCreate: React.FC = () => {
                 <Label htmlFor="plaintiff">Plaintiff</Label>
                 <select
                   name="plaintiff"
-                  value={formData.plaintiff.id}
+                  value={formData.plaintiff.id || ""}
                   onChange={handleChange}
                   required
                   className="w-full border rounded px-3 py-2"
@@ -238,7 +238,7 @@ const ClerkCreate: React.FC = () => {
                 <Label htmlFor="opponent">Opponent</Label>
                 <select
                   name="opponent"
-                  value={formData.opponent.id}
+                  value={formData.opponent.id || ""}
                   onChange={handleChange}
                   className="w-full border rounded px-3 py-2"
                 >
