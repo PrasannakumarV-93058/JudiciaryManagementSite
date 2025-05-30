@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { cn } from "../lib/utils"; 
+import { cn } from "../lib/utils";
 import { Button } from "../components/ui/button";
 import { ScrollArea } from "../components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
@@ -12,13 +12,21 @@ import {
   Calendar,
   Users,
   BarChart3,
-  Settings,
   LogOut,
   BookOpen,
   MessageSquare,
   Clock,
   FileSearch,
+  // Settings, // imported but not used; can remove if unused
 } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
+
+
+
+interface JwtPayload {
+  username: string;
+  fullName?: string;
+}
 
 interface SidebarProps {
   role: string;
@@ -27,6 +35,21 @@ interface SidebarProps {
 export function DashboardSidebar({ role }: SidebarProps) {
   const location = useLocation();
   const [open, setOpen] = useState(false);
+
+  // Decode JWT token here
+  const token = sessionStorage.getItem("jwtToken");
+  let username = "";
+  if (token) {
+    try {
+      const decoded: JwtPayload = jwtDecode(token);
+      username = decoded.fullName || decoded.username || "pro user";
+      console.log("decode:", username);
+
+    } catch (error) {
+      console.error("Invalid token", error);
+      username = "";
+    }
+  }
 
   const getNavItems = (role: string) => {
     const commonItems = [
@@ -39,7 +62,7 @@ export function DashboardSidebar({ role }: SidebarProps) {
         title: "Calendar",
         href: `/dashboard/${role}/calendar`,
         icon: <Calendar className="h-5 w-5" />,
-      }
+      },
     ];
 
     const roleSpecificItems: Record<string, { title: string; href: string; icon: React.ReactNode }[]> = {
@@ -89,10 +112,10 @@ export function DashboardSidebar({ role }: SidebarProps) {
           icon: <FileText className="h-5 w-5" />,
         },
         {
-          title: "Court Schedule",
+          title: "Schedule Hearing",
           href: `/dashboard/${role}/schedule-hearing`,
           icon: <Clock className="h-5 w-5" />,
-        }
+        },
       ],
       prosecutor: [
         {
@@ -149,10 +172,21 @@ export function DashboardSidebar({ role }: SidebarProps) {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="w-72 p-0">
-          <MobileSidebar role={role} navItems={navItems} pathname={location.pathname} setOpen={setOpen} />
+          <MobileSidebar
+            role={role}
+            navItems={navItems}
+            pathname={location.pathname}
+            setOpen={setOpen}
+            username={username}
+          />
         </SheetContent>
       </Sheet>
-      <DesktopSidebar role={role} navItems={navItems} pathname={location.pathname} />
+      <DesktopSidebar
+        role={role}
+        navItems={navItems}
+        pathname={location.pathname}
+        username={username}
+      />
     </>
   );
 }
@@ -166,13 +200,24 @@ interface SidebarContentProps {
   }[];
   pathname: string;
   setOpen?: (open: boolean) => void;
+  username?: string;
 }
 
-function MobileSidebar({ role, navItems, pathname, setOpen }: SidebarContentProps) {
+function MobileSidebar({
+  role,
+  navItems,
+  pathname,
+  setOpen,
+  username,
+}: SidebarContentProps) {
   return (
     <div className="flex h-full flex-col border-r bg-slate-100/40">
       <div className="flex h-14 items-center border-b px-4">
-        <Link to="/" className="flex items-center gap-2 font-semibold" onClick={() => setOpen?.(false)}>
+        <Link
+          to="/"
+          className="flex items-center gap-2 font-semibold"
+          onClick={() => setOpen?.(false)}
+        >
           <Gavel className="h-6 w-6" />
           <span>KT Judiciary</span>
         </Link>
@@ -186,7 +231,9 @@ function MobileSidebar({ role, navItems, pathname, setOpen }: SidebarContentProp
               onClick={() => setOpen?.(false)}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-slate-100 hover:text-slate-900",
-                pathname === item.href ? "bg-slate-100 text-slate-900" : "text-slate-700"
+                pathname === item.href
+                  ? "bg-slate-100 text-slate-900"
+                  : "text-slate-700"
               )}
             >
               {item.icon}
@@ -199,7 +246,9 @@ function MobileSidebar({ role, navItems, pathname, setOpen }: SidebarContentProp
         <div className="flex items-center gap-3 rounded-lg px-3 py-2">
           <div className="flex flex-col">
             <span className="text-sm font-medium capitalize">{role}</span>
-            <span className="text-xs text-slate-500">John Doe</span>
+            <span className="text-xs text-slate-500">
+              {username || "Guest"}
+            </span>
           </div>
         </div>
         <Button variant="outline" className="w-full mt-2 justify-start" asChild>
@@ -213,7 +262,12 @@ function MobileSidebar({ role, navItems, pathname, setOpen }: SidebarContentProp
   );
 }
 
-function DesktopSidebar({ role, navItems, pathname }: SidebarContentProps) {
+function DesktopSidebar({
+  role,
+  navItems,
+  pathname,
+  username,
+}: SidebarContentProps) {
   return (
     <div className="hidden md:flex h-screen w-64 flex-col fixed inset-y-0 z-10">
       <div className="flex h-14 items-center border-b px-4 bg-white">
@@ -230,7 +284,9 @@ function DesktopSidebar({ role, navItems, pathname }: SidebarContentProps) {
               to={item.href}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-slate-100 hover:text-slate-900",
-                pathname === item.href ? "bg-slate-100 text-slate-900" : "text-slate-700"
+                pathname === item.href
+                  ? "bg-slate-100 text-slate-900"
+                  : "text-slate-700"
               )}
             >
               {item.icon}
@@ -243,7 +299,9 @@ function DesktopSidebar({ role, navItems, pathname }: SidebarContentProps) {
         <div className="flex items-center gap-3 rounded-lg px-3 py-2">
           <div className="flex flex-col">
             <span className="text-sm font-medium capitalize">{role}</span>
-            <span className="text-xs text-slate-500">John Doe</span>
+            <span className="text-xs text-slate-500">
+              {username || "Guest"}
+            </span>
           </div>
         </div>
         <Button variant="outline" className="w-full mt-2 justify-start" asChild>

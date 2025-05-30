@@ -43,8 +43,17 @@ const ClerkDashboard = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setCases(response.data);
-      console.log(response.data);
+      const sortedCases = response.data.sort((a: { id: any }, b: { id: any }) => {
+        const numA = Number(a.id);
+        const numB = Number(b.id);
+    
+        if (!isNaN(numA) && !isNaN(numB)) {
+          return numA - numB;
+        }
+        return String(a.id).localeCompare(String(b.id));
+      });
+      setCases(sortedCases);
+      console.log(sortedCases);
     } catch (error) {
       console.error("Error fetching cases:", error);
     } finally {
@@ -79,9 +88,9 @@ const ClerkDashboard = () => {
       title: "Create New User",
       description: "Create or update details for lawyers, plaintiffs, and opponents.",
       icon: <Users className="w-6 h-6 text-purple-600" />,
-      actionText: "Manage",
+      actionText: "Create User",
       onClick: () => {
-        // handle participant management
+        navigate("/dashboard/clerk/create-user");
       },
     },
     {
