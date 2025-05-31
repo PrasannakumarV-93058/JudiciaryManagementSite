@@ -41,9 +41,7 @@ export function DashboardSidebar({ role }: SidebarProps) {
         { title: "Schedule Hearing", href: `/dashboard/${role}/schedule-hearing`, icon: <Calendar className="h-5 w-5" /> },
       ],
       lawyer: [
-        { title: "Cases", href: `/dashboard/${role}/cases`, icon: <FileText className="h-5 w-5" /> },
-        { title: "Clients", href: `/dashboard/${role}/clients`, icon: <Users className="h-5 w-5" /> },
-        { title: "Legal Research", href: `/dashboard/${role}/research`, icon: <BookOpen className="h-5 w-5" /> },
+        { title: "My Cases", href: `/dashboard/${role}/cases`, icon: <FileText className="h-5 w-5" /> },
       ],
       clerk: [
         { title: "Case Filing", href: `/dashboard/${role}/create-case`, icon: <PlusCircle className="h-5 w-5" /> },
