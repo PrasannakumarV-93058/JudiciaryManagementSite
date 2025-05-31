@@ -32,19 +32,6 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       element: <JudgeDashboard/>,
     },
     {
-      title: "Calendar",
-      path: `calendar`,
-      icon: <Calendar className="h-5 w-5" />,
-      element: <CalendarPage />,
-    },
-
-    {
-      title: "Cases",
-      path: "cases",
-      icon: <FileText className="h-5 w-5" />,
-      element: <CasesPage />,
-    },
-    {
       title: "Hearings",
       path: "hearings",
       icon: <Gavel className="h-5 w-5" />,
@@ -55,6 +42,12 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       path: "reports",
       icon: <BarChart3 className="h-5 w-5" />,
       element: <BarChart3 name="Reports" />,
+    },
+    {
+      title: "Schedule Next Hearing",
+      path: "schedule-hearing",
+      icon: <BarChart3 className="h-5 w-5" />,
+      element: <ScheduleHearing/>,
     },
   ],
   lawyer: [

@@ -107,7 +107,7 @@ const ClerkDashboard = () => {
       title: "Update Case Status",
       description: "Log regular case updates entering all necessary case details.",
       icon: <Gavel className="w-6 h-6 text-blue-600" />,
-      actionText: "Create Case",
+      actionText: "Update Case",
       onClick: () => {
         navigate("/dashboard/clerk/update-status");
       },

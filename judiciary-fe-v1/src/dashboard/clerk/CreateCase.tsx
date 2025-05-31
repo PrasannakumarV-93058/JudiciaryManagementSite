@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface CaseForm {
   category: string;
@@ -34,6 +35,10 @@ const ClerkCreate: React.FC = () => {
   const [prosecutors, setProsecutors] = useState<{ id: number; fullName: string }[]>([]);
   const [plaintiffs, setPlaintiffs] = useState<{ id: number; fullName: string }[]>([]);
   const [opponents, setOpponents] = useState<{ id: number; fullName: string }[]>([]);
+
+  const [loading, setLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const fetchDropdownData = async () => {
@@ -83,7 +88,9 @@ const ClerkCreate: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submitting Case:', formData);
+    setLoading(true);
+    setSuccessMsg("");
+    setErrorMsg("");
 
     try {
       const token = sessionStorage.getItem("jwtToken");
@@ -108,31 +115,56 @@ const ClerkCreate: React.FC = () => {
       }
 
       const result = await response.json();
-      console.log("Case created successfully:", result);
-    } catch (error) {
-      console.error("Error creating case:", error);
+      setSuccessMsg("Case created successfully.");
+      setFormData({
+        category: '',
+        status: '',
+        startDate: "",
+        description: '',
+        judge: { id: 0 },
+        lawyer: { id: 0 },
+        prosecutor: { id: 0 },
+        plaintiff: { id: 0 },
+        opponent: { id: 0 },
+      });
+
+    } catch (error: any) {
+      setErrorMsg("Error creating case: " + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen">
-      <h1 className="text-2xl font-semibold text-slate-800 flex items-center gap-2">
+    <div className="bg-slate-50 min-h-screen p-6">
+      <h1 className="text-2xl font-semibold text-slate-800 flex items-center gap-2 mb-4">
         <PlusCircle className="w-6 h-6 text-blue-600" />
         Create New Case
       </h1>
+
+      {successMsg && (
+        <Alert className="mb-4">
+          <CheckCircle2 className="h-5 w-5 text-green-600" />
+          <AlertTitle>Success</AlertTitle>
+          <AlertDescription>{successMsg}</AlertDescription>
+        </Alert>
+      )}
+
+      {errorMsg && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertCircle className="h-5 w-5 text-red-600" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{errorMsg}</AlertDescription>
+        </Alert>
+      )}
+
       <Card className="max-w-3xl mx-auto bg-white shadow-md border border-gray-300">
         <CardContent className="p-6 space-y-4">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="category">Category</Label>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleChange}
-                  required
-                  className="w-full border rounded px-3 py-2"
-                >
+                <select name="category" value={formData.category} onChange={handleChange} required className="w-full border rounded px-3 py-2">
                   <option value="" disabled>Select Category</option>
                   <option value="Civil">Civil</option>
                   <option value="Criminal">Criminal</option>
@@ -141,13 +173,7 @@ const ClerkCreate: React.FC = () => {
               </div>
               <div>
                 <Label htmlFor="status">Status</Label>
-                <select
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  required
-                  className="w-full border rounded px-3 py-2"
-                >
+                <select name="status" value={formData.status} onChange={handleChange} required className="w-full border rounded px-3 py-2">
                   <option value="" disabled>Select Status</option>
                   <option value="Open">Open</option>
                   <option value="In Progress">In Progress</option>
@@ -156,101 +182,60 @@ const ClerkCreate: React.FC = () => {
               </div>
               <div>
                 <Label htmlFor="startDate">Start Date</Label>
-                <input
-                  type="date"
-                  name="startDate"
-                  value={formData.startDate}
-                  onChange={handleChange}
-                  required
-                  className="w-full border rounded px-3 py-2"
-                />
+                <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} required className="w-full border rounded px-3 py-2" />
               </div>
               <div>
                 <Label htmlFor="description">Description</Label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  required
-                  className="w-full border rounded px-3 py-2"
-                />
+                <textarea name="description" value={formData.description} onChange={handleChange} required className="w-full border rounded px-3 py-2" />
               </div>
               <div>
                 <Label htmlFor="judge">Judge</Label>
-                <select
-                  name="judge"
-                  value={formData.judge.id || ""}
-                  onChange={handleChange}
-                  required
-                  className="w-full border rounded px-3 py-2"
-                >
+                <select name="judge" value={formData.judge.id || ""} onChange={handleChange} required className="w-full border rounded px-3 py-2">
                   <option value="" disabled>Select Judge</option>
-                  {judges.map((j) => (
-                    <option key={j.id} value={j.id}>{j.fullName}</option>
-                  ))}
+                  {judges.map(j => <option key={j.id} value={j.id}>{j.fullName}</option>)}
                 </select>
               </div>
               <div>
                 <Label htmlFor="lawyer">Lawyer</Label>
-                <select
-                  name="lawyer"
-                  value={formData.lawyer.id || ""}
-                  onChange={handleChange}
-                  required
-                  className="w-full border rounded px-3 py-2"
-                >
+                <select name="lawyer" value={formData.lawyer.id || ""} onChange={handleChange} required className="w-full border rounded px-3 py-2">
                   <option value="" disabled>Select Lawyer</option>
-                  {lawyers.map((l) => (
-                    <option key={l.id} value={l.id}>{l.fullName}</option>
-                  ))}
+                  {lawyers.map(l => <option key={l.id} value={l.id}>{l.fullName}</option>)}
                 </select>
               </div>
               <div>
                 <Label htmlFor="prosecutor">Prosecutor</Label>
-                <select
-                  name="prosecutor"
-                  value={formData.prosecutor.id || ""}
-                  onChange={handleChange}
-                  className="w-full border rounded px-3 py-2"
-                >
+                <select name="prosecutor" value={formData.prosecutor.id || ""} onChange={handleChange} className="w-full border rounded px-3 py-2">
                   <option value="" disabled>Select Prosecutor</option>
-                  {prosecutors.map((p) => (
-                    <option key={p.id} value={p.id}>{p.fullName}</option>
-                  ))}
+                  {prosecutors.map(p => <option key={p.id} value={p.id}>{p.fullName}</option>)}
                 </select>
               </div>
               <div>
                 <Label htmlFor="plaintiff">Plaintiff</Label>
-                <select
-                  name="plaintiff"
-                  value={formData.plaintiff.id || ""}
-                  onChange={handleChange}
-                  required
-                  className="w-full border rounded px-3 py-2"
-                >
+                <select name="plaintiff" value={formData.plaintiff.id || ""} onChange={handleChange} required className="w-full border rounded px-3 py-2">
                   <option value="" disabled>Select Plaintiff</option>
-                  {plaintiffs.map((p) => (
-                    <option key={p.id} value={p.id}>{p.fullName}</option>
-                  ))}
+                  {plaintiffs.map(p => <option key={p.id} value={p.id}>{p.fullName}</option>)}
                 </select>
               </div>
               <div>
                 <Label htmlFor="opponent">Opponent</Label>
-                <select
-                  name="opponent"
-                  value={formData.opponent.id || ""}
-                  onChange={handleChange}
-                  className="w-full border rounded px-3 py-2"
-                >
+                <select name="opponent" value={formData.opponent.id || ""} onChange={handleChange} className="w-full border rounded px-3 py-2">
                   <option value="" disabled>Select Opponent</option>
-                  {opponents.map((o) => (
-                    <option key={o.id} value={o.id}>{o.fullName}</option>
-                  ))}
+                  {opponents.map(o => <option key={o.id} value={o.id}>{o.fullName}</option>)}
                 </select>
               </div>
             </div>
-            <Button type="submit" className="bg-blue-600 text-white hover:bg-blue-700 mt-4">
-              Create Case
+            <Button
+              type="submit"
+              className="bg-blue-600 text-white hover:bg-blue-700 mt-4"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="flex items-center gap-2">
+                  <Loader2 className="animate-spin h-5 w-5" /> Creating...
+                </span>
+              ) : (
+                "Create Case"
+              )}
             </Button>
           </form>
         </CardContent>

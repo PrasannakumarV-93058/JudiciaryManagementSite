@@ -16,11 +16,15 @@ const LoginPage = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: name, password }),
+
+
       });
+      sessionStorage.setItem('currentUserName', name);
       if (response.ok) {
         const data = await response.json();
         if (data.token) {
           sessionStorage.setItem('jwtToken', data.token);
+
           navigate(`/dashboard/${role}`);
         } else {
           alert('Login failed: No token received.');

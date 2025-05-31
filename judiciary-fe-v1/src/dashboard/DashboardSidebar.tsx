@@ -1,57 +1,29 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "../lib/utils";
 import { Button } from "../components/ui/button";
 import { ScrollArea } from "../components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "../components/ui/sheet";
 import {
-  Gavel,
-  Menu,
-  Home,
-  FileText,
-  Calendar,
-  Users,
-  BarChart3,
-  LogOut,
-  BookOpen,
-  MessageSquare,
-  Clock,
-  FileSearch
-,PlusCircle, CalendarPlus,Settings,
-User
-  // Settings, // imported but not used; can remove if unused
+  Gavel, Menu, Home, FileText, Calendar, Users, BarChart3, LogOut,
+  BookOpen, MessageSquare, Clock, FileSearch, PlusCircle, CalendarPlus,
+  Settings, User,
 } from "lucide-react";
-import { jwtDecode } from "jwt-decode";
-
-
-
-interface JwtPayload {
-  username: string;
-  fullName?: string;
-}
 
 interface SidebarProps {
   role: string;
 }
-
+  
 export function DashboardSidebar({ role }: SidebarProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
-  // Decode JWT token here
-  const token = sessionStorage.getItem("jwtToken");
-  let username = "";
-  if (token) {
-    try {
-      const decoded: JwtPayload = jwtDecode(token);
-      username = decoded.fullName || decoded.username || "pro user";
-      console.log("decode:", username);
 
-    } catch (error) {
-      console.error("Invalid token", error);
-      username = "";
-    }
-  }
+  const handleLogout = () => {
+    sessionStorage.clear(); // Clear all session storage
+    navigate("/login");     // Navigate to login
+  };
 
   const getNavItems = (role: string) => {
     const commonItems = [
@@ -59,116 +31,48 @@ export function DashboardSidebar({ role }: SidebarProps) {
         title: "Dashboard",
         href: `/dashboard/${role}`,
         icon: <Home className="h-5 w-5" />,
-      },
-      {
-        title: "Calendar",
-        href: `/dashboard/${role}/calendar`,
-        icon: <Calendar className="h-5 w-5" />,
-      },
+      }
     ];
 
     const roleSpecificItems: Record<string, { title: string; href: string; icon: React.ReactNode }[]> = {
       judge: [
-        {
-          title: "Cases",
-          href: `/dashboard/${role}/cases`,
-          icon: <FileText className="h-5 w-5" />,
-        },
-        {
-          title: "Hearings",
-          href: `/dashboard/${role}/hearings`,
-          icon: <Gavel className="h-5 w-5" />,
-        },
-        {
-          title: "Reports",
-          href: `/dashboard/${role}/reports`,
-          icon: <BarChart3 className="h-5 w-5" />,
-        },
+        { title: "Cases", href: `/dashboard/${role}/cases`, icon: <FileText className="h-5 w-5" /> },
+        { title: "Reports", href: `/dashboard/${role}/reports`, icon: <BarChart3 className="h-5 w-5" /> },
+        { title: "Schedule Hearing", href: `/dashboard/${role}/schedule-hearing`, icon: <Calendar className="h-5 w-5" /> },
       ],
       lawyer: [
-        {
-          title: "Cases",
-          href: `/dashboard/${role}/cases`,
-          icon: <FileText className="h-5 w-5" />,
-        },
-        {
-          title: "Clients",
-          href: `/dashboard/${role}/clients`,
-          icon: <Users className="h-5 w-5" />,
-        },
-        {
-          title: "Legal Research",
-          href: `/dashboard/${role}/research`,
-          icon: <BookOpen className="h-5 w-5" />,
-        },
+        { title: "Cases", href: `/dashboard/${role}/cases`, icon: <FileText className="h-5 w-5" /> },
+        { title: "Clients", href: `/dashboard/${role}/clients`, icon: <Users className="h-5 w-5" /> },
+        { title: "Legal Research", href: `/dashboard/${role}/research`, icon: <BookOpen className="h-5 w-5" /> },
       ],
       clerk: [
-        {
-          title: "Case Filing",
-          href: `/dashboard/${role}/create-case`,
-          icon: <PlusCircle className="h-5 w-5" />,
-        },
-        {
-          title: "Create User",
-          href: `/dashboard/${role}/create-user`,
-          icon: <User className="h-5 w-5" />,
-        },
-        {
-          title: "Schedule Hearing",
-          href: `/dashboard/${role}/schedule-hearing`,
-          icon: <Clock className="h-5 w-5" />,
-        },
-        {
-          title: "Update Status",
-          href: `/dashboard/${role}/update-status`,
-          icon: <FileText className="h-5 w-5" />,
-        },
+        { title: "Case Filing", href: `/dashboard/${role}/create-case`, icon: <PlusCircle className="h-5 w-5" /> },
+        { title: "Create User", href: `/dashboard/${role}/create-user`, icon: <User className="h-5 w-5" /> },
+        { title: "Schedule Hearing", href: `/dashboard/${role}/schedule-hearing`, icon: <Clock className="h-5 w-5" /> },
+        { title: "Update Status", href: `/dashboard/${role}/update-status`, icon: <FileText className="h-5 w-5" /> },
       ],
       prosecutor: [
-        {
-          title: "Cases",
-          href: `/dashboard/${role}/cases`,
-          icon: <FileText className="h-5 w-5" />,
-        },
-        {
-          title: "Investigations",
-          href: `/dashboard/${role}/investigations`,
-          icon: <FileSearch className="h-5 w-5" />,
-        },
-        {
-          title: "Reports",
-          href: `/dashboard/${role}/reports`,
-          icon: <BarChart3 className="h-5 w-5" />,
-        },
+        { title: "Cases", href: `/dashboard/${role}/cases`, icon: <FileText className="h-5 w-5" /> },
+        { title: "Investigations", href: `/dashboard/${role}/investigations`, icon: <FileSearch className="h-5 w-5" /> },
+        { title: "Reports", href: `/dashboard/${role}/reports`, icon: <BarChart3 className="h-5 w-5" /> },
       ],
       client: [
-        {
-          title: "My Cases",
-          href: `/dashboard/${role}/cases`,
-          icon: <FileText className="h-5 w-5" />,
-        },
-        {
-          title: "Documents",
-          href: `/dashboard/${role}/documents`,
-          icon: <FileSearch className="h-5 w-5" />,
-        },
-        {
-          title: "Messages",
-          href: `/dashboard/${role}/messages`,
-          icon: <MessageSquare className="h-5 w-5" />,
-        },
+        { title: "My Cases", href: `/dashboard/${role}/cases`, icon: <FileText className="h-5 w-5" /> },
+        { title: "Documents", href: `/dashboard/${role}/documents`, icon: <FileSearch className="h-5 w-5" /> },
+        { title: "Messages", href: `/dashboard/${role}/messages`, icon: <MessageSquare className="h-5 w-5" /> },
       ],
     };
 
     return [
-      ...commonItems.slice(0, 1),
-      ...(roleSpecificItems[role] || []),
-      ...commonItems.slice(1),
+      ...commonItems,
+      ...(roleSpecificItems[role] || [])
     ];
   };
 
   const navItems = getNavItems(role);
-
+  const currentUserName = sessionStorage.getItem("currentUserName");
+  let username = "";
+  username = currentUserName || "pro user";
   return (
     <>
       <Sheet open={open} onOpenChange={setOpen}>
@@ -185,6 +89,7 @@ export function DashboardSidebar({ role }: SidebarProps) {
             pathname={location.pathname}
             setOpen={setOpen}
             username={username}
+            onLogout={handleLogout}
           />
         </SheetContent>
       </Sheet>
@@ -193,6 +98,7 @@ export function DashboardSidebar({ role }: SidebarProps) {
         navItems={navItems}
         pathname={location.pathname}
         username={username}
+        onLogout={handleLogout}
       />
     </>
   );
@@ -208,6 +114,7 @@ interface SidebarContentProps {
   pathname: string;
   setOpen?: (open: boolean) => void;
   username?: string;
+  onLogout: () => void;
 }
 
 function MobileSidebar({
@@ -216,6 +123,7 @@ function MobileSidebar({
   pathname,
   setOpen,
   username,
+  onLogout
 }: SidebarContentProps) {
   return (
     <div className="flex h-full flex-col border-r bg-slate-100/40">
@@ -258,11 +166,16 @@ function MobileSidebar({
             </span>
           </div>
         </div>
-        <Button variant="outline" className="w-full mt-2 justify-start" asChild>
-          <Link to="/login">
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </Link>
+        <Button
+          variant="outline"
+          onClick={() => {
+            setOpen?.(false);
+            onLogout();
+          }}
+          className="w-full mt-2 justify-start"
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          Logout
         </Button>
       </div>
     </div>
@@ -274,6 +187,7 @@ function DesktopSidebar({
   navItems,
   pathname,
   username,
+  onLogout
 }: SidebarContentProps) {
   return (
     <div className="hidden md:flex h-screen w-64 flex-col fixed inset-y-0 z-10">
@@ -311,11 +225,13 @@ function DesktopSidebar({
             </span>
           </div>
         </div>
-        <Button variant="outline" className="w-full mt-2 justify-start" asChild>
-          <Link to="/">
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </Link>
+        <Button
+          variant="outline"
+          onClick={onLogout}
+          className="w-full mt-2 justify-start"
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          Logout
         </Button>
       </div>
     </div>

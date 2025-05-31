@@ -6,6 +6,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <header className="bg-gradient-to-r from-slate-800 to-slate-900 text-white">
+        
         <div className="container mx-auto px-4 py-16 md:py-24">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">KT Judiciary Management System</h1>

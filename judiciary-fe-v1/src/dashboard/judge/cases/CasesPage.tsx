@@ -67,35 +67,7 @@ const CasesPage: React.FC = () => {
         plaintiff_id: 3,
         opponent_id: 4,
         created_at: '2025-05-01T10:00:00Z',
-      },
-      {
-        id: 2,
-        category: 'Criminal',
-        status: 'Ongoing',
-        start_date: '2025-03-12T09:00:00Z',
-        end_date: null,
-        next_hearing: '2025-06-10T14:00:00Z',
-        judge_id: 2,
-        lawyer_id: 6,
-        prosecutor_id: 3,
-        plaintiff_id: 7,
-        opponent_id: 8,
-        created_at: '2025-03-01T10:00:00Z',
-      },
-      {
-        id: 3,
-        category: 'Civil',
-        status: 'Closed',
-        start_date: '2025-01-15T11:00:00Z',
-        end_date: '2025-04-01T11:00:00Z',
-        next_hearing: null,
-        judge_id: 1,
-        lawyer_id: 7,
-        prosecutor_id: 2,
-        plaintiff_id: 9,
-        opponent_id: 10,
-        created_at: '2025-01-01T10:00:00Z',
-      },
+      }
     ];
 
     setTimeout(() => {
