@@ -5,6 +5,7 @@ import com.fsad.JudiciaryManagementSiteBackend.Entity.User;
 import com.fsad.JudiciaryManagementSiteBackend.Repository.AdvocateRepository;
 import com.fsad.JudiciaryManagementSiteBackend.Repository.UserRepository;
 import com.fsad.JudiciaryManagementSiteBackend.Service.JwtService;
+import com.fsad.JudiciaryManagementSiteBackend.DTO.AdvocateWonLossSummaryDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,5 +105,23 @@ public class AdvocateController {
 					// }
 				})
 				.orElse(ResponseEntity.status(404).body("User not found"));
+	}
+
+	@GetMapping("/{id}/won-loss-summary")
+	@Operation(summary = "Get won/loss summary for an advocate")
+	public AdvocateWonLossSummaryDTO getAdvocateWonLossSummary(@PathVariable Integer id) {
+		List<Advocate> allCases = advocateRepository.findAll();
+		int casesWon = 0;
+		int totalCases = 0;
+		for (Advocate adv : allCases) {
+			if (adv.getUser_id() != null && adv.getUser_id().getId().equals(id)) {
+				totalCases++;
+				if ("Won".equalsIgnoreCase(adv.getResult())) {
+					casesWon++;
+				}
+			}
+		}
+		int casesLost = totalCases - casesWon;
+		return new AdvocateWonLossSummaryDTO(totalCases, casesWon, casesLost);
 	}
 }
