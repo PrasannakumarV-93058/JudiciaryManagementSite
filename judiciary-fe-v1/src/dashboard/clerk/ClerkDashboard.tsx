@@ -109,7 +109,7 @@ const ClerkDashboard = () => {
       icon: <Gavel className="w-6 h-6 text-blue-600" />,
       actionText: "Create Case",
       onClick: () => {
-        navigate("/dashboard/clerk/create-case");
+        navigate("/dashboard/clerk/update-status");
       },
     },
   ];

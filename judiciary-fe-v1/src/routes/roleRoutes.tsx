@@ -10,12 +10,13 @@ import ClerkDashboard from "../dashboard/clerk/ClerkDashboard";
 import ClerkCreate from "../dashboard/clerk/CreateCase";
 import ClerkCreateUser from "../dashboard/clerk/CreateUser";
 import ScheduleHearing from "../dashboard/clerk/ScheduleHearing";
+import UpdateStatus from "../dashboard/clerk/UpdateStatus";
 // Define type for Role
 export type Role = "judge" | "lawyer" | "clerk" | "prosecutor" | "client";
 
 // Define the route item structure
 export interface RouteItem {
-  title: string;
+  title: string;  
   path: string;
   icon: JSX.Element;
   element: JSX.Element;
@@ -148,6 +149,12 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       path: "documents",
       icon: <FileSearch className="h-5 w-5" />,
       element: <FileSearch name="Document Management" />,
+    },
+    {
+      title: "Update Status",
+      path: `update-status`,
+      icon: <Home className="h-5 w-5" />,
+      element: <UpdateStatus/>,
     },
     
   ],
