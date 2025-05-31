@@ -44,39 +44,43 @@ const JudgeScheduleHearing: React.FC = () => {
       </button>
     </div>
   );
-
+const currentUserName= sessionStorage.getItem("currentUserName");
   useEffect(() => {
-    const token = sessionStorage.getItem('jwtToken');
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    };
-
     const fetchDropdownData = async () => {
       try {
-        const [caseRes] = await Promise.all([
-          fetch('http://localhost:8080/api/cases/display', { headers }),
-        ]);
-
-        const casesData: Case[] = await caseRes.json();
-      
-
-        casesData.sort((a, b) => {
-          const numA = Number(a.id);
-          const numB = Number(b.id);
-    
-          if (!isNaN(numA) && !isNaN(numB)) {
-            return numA - numB;
-          }
-          return a.id.localeCompare(b.id);
-        });
-
-        setCases(casesData);
+        const token = sessionStorage.getItem('jwtToken');
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        };
+  
+        const response = await fetch('http://localhost:8080/api/cases/display', { headers });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+  
+        const casesData: Case[] = await response.json();
+        console.log(casesData);
+        const filteredCases = casesData
+          .filter((c) => c.judgeName?.includes(currentUserName))
+          .sort((a, b) => {
+            const numA = Number(a.id);
+            const numB = Number(b.id);
+  
+            if (!isNaN(numA) && !isNaN(numB)) {
+              return numA - numB;
+            }
+            return a.id.localeCompare(b.id);
+          });
+          console.log(filteredCases);
+  
+        setCases(filteredCases);
       } catch (error) {
-        console.error('Error fetching dropdown data:', error);
+        console.error('Error fetching cases:', error);
       }
     };
-
+  
     fetchDropdownData();
   }, []);
 
