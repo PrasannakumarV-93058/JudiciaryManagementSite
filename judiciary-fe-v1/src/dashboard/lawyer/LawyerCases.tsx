@@ -21,34 +21,49 @@ interface Case {
   clients: Person[];
 }
 
+interface WLdata {
+  casesLost: string;
+  casesWon: string;
+  totalCases: string;
+}
+
 const LawyerCases: React.FC = () => {
+  const [wlData, setWlData] = useState<WLdata | null>(null);
   const [cases, setCases] = useState<Case[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const currentLawyerName = sessionStorage.getItem('username') || ''; // Adjust if needed
+  const currentLawyerName = sessionStorage.getItem('currentUserName') || '';
 
   useEffect(() => {
-    const fetchCases = async () => {
+    const fetchData = async () => {
       setLoading(true);
       setErrorMsg('');
+
       try {
         const token = sessionStorage.getItem('jwtToken');
-        const response = await fetch('http://localhost:8080/api/cases/display', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        };
 
-        if (!response.ok) throw new Error('Failed to fetch cases');
+        // Fetch won-loss summary
+        const wlRes = await fetch('http://localhost:8080/api/advocates/3/won-loss-summary', { headers });
+        if (!wlRes.ok) throw new Error('Failed to fetch won/loss summary');
+        const wlSummary: WLdata = await wlRes.json();
+        setWlData(wlSummary);
 
-        const allCases: Case[] = await response.json();
+        // Fetch all cases
+        const casesRes = await fetch('http://localhost:8080/api/cases/display', { headers });
+        if (!casesRes.ok) throw new Error('Failed to fetch cases');
+        const allCases: Case[] = await casesRes.json();
+        console.log("retrieved cases :",allCases );
 
-        const lawyerCases = allCases.filter((c) =>
-          c.advocates.some((a) => a.fullName === currentLawyerName)
+        // Filter lawyer's cases
+        // console.log(currentLawyerName)
+        const lawyerCases = allCases.filter(c =>
+          c.advocates.some(a => a.fullName === currentLawyerName)
         );
-
         setCases(lawyerCases);
       } catch (err: any) {
         setErrorMsg(err.message || 'Something went wrong.');
@@ -57,14 +72,10 @@ const LawyerCases: React.FC = () => {
       }
     };
 
-    fetchCases();
+    fetchData();
   }, []);
 
-  const wonCases = cases.filter((c) => c.status.toLowerCase() === 'won');
-  const lostCases = cases.filter((c) => c.status.toLowerCase() === 'lost');
-  const currentCases = cases.filter(
-    (c) => c.status.toLowerCase() === 'open' || c.status.toLowerCase().includes('progress')
-  );
+  const currentCases = cases.filter(c => c.status.toLowerCase() === 'open');
 
   return (
     <div className="max-w-3xl mx-auto mt-8">
@@ -83,31 +94,31 @@ const LawyerCases: React.FC = () => {
             <Card className="w-1/3 shadow">
               <CardContent className="p-4">
                 <Label className="text-gray-500">Total Cases</Label>
-                <p className="text-2xl font-semibold">{cases.length}</p>
+                <p className="text-2xl font-semibold">{wlData?.totalCases ?? '0'}</p>
               </CardContent>
             </Card>
             <Card className="w-1/3 shadow">
               <CardContent className="p-4">
                 <Label className="text-gray-500">Won Cases</Label>
-                <p className="text-2xl font-semibold text-green-600">{wonCases.length}</p>
+                <p className="text-2xl font-semibold text-green-600">{wlData?.casesWon ?? '0'}</p>
               </CardContent>
             </Card>
             <Card className="w-1/3 shadow">
               <CardContent className="p-4">
                 <Label className="text-gray-500">Lost Cases</Label>
-                <p className="text-2xl font-semibold text-red-600">{lostCases.length}</p>
+                <p className="text-2xl font-semibold text-red-600">{wlData?.casesLost ?? '0'}</p>
               </CardContent>
             </Card>
           </div>
 
-
+          {/* Current Cases */}
           <div className="mb-10">
             <h3 className="text-xl font-semibold mb-4 text-blue-300">Current Case Status</h3>
             {currentCases.length === 0 ? (
               <p className="text-sm text-gray-500">No open cases assigned currently.</p>
             ) : (
               <div className="grid gap-4">
-                {currentCases.map((c) => (
+                {currentCases.map(c => (
                   <Card key={c.id} className="shadow border">
                     <CardContent className="p-4 space-y-2">
                       <h4 className="text-lg font-semibold text-blue-600">Case #{c.id}</h4>
@@ -121,10 +132,8 @@ const LawyerCases: React.FC = () => {
                       <div>
                         <Label>Clients:</Label>
                         <ul className="list-disc list-inside text-gray-700 text-sm">
-                          {c.clients.map((client) => (
-                            <li key={client.id}>
-                              {client.fullName} ({client.email})
-                            </li>
+                          {c.clients.map(client => (
+                            <li key={client.id}>{client.fullName} ({client.email})</li>
                           ))}
                         </ul>
                       </div>
@@ -135,11 +144,11 @@ const LawyerCases: React.FC = () => {
             )}
           </div>
 
-          {/* All Cases Section */}
+          {/* All Cases */}
           <div>
             <h3 className="text-xl font-semibold mb-4 text-gray-700">All Case Details</h3>
             <div className="grid gap-4">
-              {cases.map((c) => (
+              {cases.map(c => (
                 <Card key={c.id} className="shadow border">
                   <CardContent className="p-4 space-y-2">
                     <h4 className="text-lg font-semibold text-blue-700">Case #{c.id}</h4>
@@ -153,10 +162,8 @@ const LawyerCases: React.FC = () => {
                     <div>
                       <Label>Clients:</Label>
                       <ul className="list-disc list-inside text-gray-700 text-sm">
-                        {c.clients.map((client) => (
-                          <li key={client.id}>
-                            {client.fullName} ({client.email})
-                          </li>
+                        {c.clients.map(client => (
+                          <li key={client.id}>{client.fullName} ({client.email})</li>
                         ))}
                       </ul>
                     </div>
