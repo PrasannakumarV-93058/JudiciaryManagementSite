@@ -1,0 +1,15 @@
+meta {
+  name: Get advocate won/loss summary
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8080/api/advocates/2/won-loss-summary
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{clerk_token}}
+}

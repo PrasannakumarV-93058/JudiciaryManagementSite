@@ -24,7 +24,6 @@ public class CaseController {
 	@Autowired
 	private CaseRepository caseRepository;
 
-	@PreAuthorize("hasRole('CLERK')")
 	@Operation(summary = "Get all cases with unified role display")
 	@GetMapping("/display")
 	public List<CaseDisplayDTO> getAllCasesWithDisplay() {
@@ -72,7 +71,6 @@ public class CaseController {
 		}).collect(Collectors.toList());
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@Operation(summary = "Get user details by case ID and role")
 	@GetMapping("/{caseId}/user")
 	public UserDisplayDTO getUserByCaseIdAndRole(
@@ -98,7 +96,6 @@ public class CaseController {
 		return new UserDisplayDTO(user.getId(), user.getFullName(), role, user.getEmail());
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@PostMapping("/createcase")
 	@Operation(summary = "Create a new case")
 	public Case createCase(@RequestBody Case caseRequest) {
@@ -119,7 +116,6 @@ public class CaseController {
 		return caseRepository.save(caseRequest);
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@PatchMapping("/{caseId}/next-hearing")
 	@Operation(summary = "Update the next hearing date for a case (Clerk/Judge only)")
 	public Case updateNextHearingDate(@PathVariable Integer caseId, @RequestBody NextHearingUpdateDTO dto) {

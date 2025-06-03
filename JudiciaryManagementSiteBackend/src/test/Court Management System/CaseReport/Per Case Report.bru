@@ -1,0 +1,15 @@
+meta {
+  name: Per Case Report
+  type: http
+  seq: 9
+}
+
+get {
+  url: http://localhost:8080/api/reports/case/5/generate-gemini
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJDTEVSSyIsImlhdCI6MTc0ODk0MTY5MCwiZXhwIjoxNzQ5MDI4MDkwfQ.MKosqRwvrMyQ3WBT5fOb0D2hSFS4ZoaTl0O1TpXRrHIe2iMFw4eugES8KJ_R_immCbyCykT5IgTbcImlA1KQSw
+}
