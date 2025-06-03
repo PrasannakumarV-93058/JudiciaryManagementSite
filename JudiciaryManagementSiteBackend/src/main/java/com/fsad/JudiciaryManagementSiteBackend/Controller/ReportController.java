@@ -107,7 +107,7 @@ public class ReportController {
 
 	// Gemini AI integration using provided API key
 	private String callGeminiAIWithSummary(String input) throws Exception {
-		String apiKey = "AIzaSyC6FY_BAZSnvyEeFQ1j7wZ93kY10pw5GgA"; // <-- Use your working API key
+		String apiKey = ""; // <-- Use your working API key
 		String endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + apiKey;
 		URL url = new URL(endpoint);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
