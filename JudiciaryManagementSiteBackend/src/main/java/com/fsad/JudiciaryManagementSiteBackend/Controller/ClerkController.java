@@ -44,20 +44,17 @@ public class ClerkController {
 		return userService.addOrUpdateJudge(judge);
 	}
 
-
 	@PostMapping("/lawyers")
 	@Operation(summary = "Add or update lawyer details")
 	public User addOrUpdateLawyer(@RequestBody User lawyer) {
 		return userService.addOrUpdateLawyer(lawyer);
 	}
 
-
 	@PostMapping("/cases/{caseId}/proceedings")
 	@Operation(summary = "Upload day-wise proceedings for a case")
 	public Case uploadProceedings(@PathVariable Integer caseId, @RequestBody Proceedings proceedings) {
 		return caseService.uploadProceedings(caseId, proceedings);
 	}
-
 
 	@PutMapping("/cases/{caseId}/status")
 	@Operation(summary = "Update status and judgment of a case")
