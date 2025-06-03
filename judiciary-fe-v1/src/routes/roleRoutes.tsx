@@ -10,12 +10,16 @@ import ClerkDashboard from "../dashboard/clerk/ClerkDashboard";
 import ClerkCreate from "../dashboard/clerk/CreateCase";
 import ClerkCreateUser from "../dashboard/clerk/CreateUser";
 import ScheduleHearing from "../dashboard/clerk/ScheduleHearing";
+import JudgeScheduleHearing from "../dashboard/judge/ScheduleHearing";
+import UpdateStatus from "../dashboard/clerk/UpdateStatus";
+import LawyerCases from "../dashboard/lawyer/LawyerCases";
+import LawyerDashboard from "../dashboard/lawyer/LawyerDashboard"
 // Define type for Role
 export type Role = "judge" | "lawyer" | "clerk" | "prosecutor" | "client";
 
 // Define the route item structure
 export interface RouteItem {
-  title: string;
+  title: string;  
   path: string;
   icon: JSX.Element;
   element: JSX.Element;
@@ -31,19 +35,6 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       element: <JudgeDashboard/>,
     },
     {
-      title: "Calendar",
-      path: `calendar`,
-      icon: <Calendar className="h-5 w-5" />,
-      element: <CalendarPage />,
-    },
-
-    {
-      title: "Cases",
-      path: "cases",
-      icon: <FileText className="h-5 w-5" />,
-      element: <CasesPage />,
-    },
-    {
       title: "Hearings",
       path: "hearings",
       icon: <Gavel className="h-5 w-5" />,
@@ -55,44 +46,26 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       icon: <BarChart3 className="h-5 w-5" />,
       element: <BarChart3 name="Reports" />,
     },
+    {
+      title: "Schedule Next Hearing",
+      path: "schedule-hearing",
+      icon: <BarChart3 className="h-5 w-5" />,
+      element: <JudgeScheduleHearing/>,
+    },
   ],
   lawyer: [
     {
       title: "Dashboard",
       path: ``,
       icon: <Home className="h-5 w-5" />,
-      element: <Home name="Dashboard" />,
+      element: <LawyerDashboard/>
     },
     {
-      title: "Calendar",
-      path: `calendar`,
-      icon: <Calendar className="h-5 w-5" />,
-      element: <CalendarPage />,
-    },
-    {
-      title: "Settings",
-      path: `settings`,
-      icon: <Settings className="h-5 w-5" />,
-      element: <Settings name="Settings" />,
-    },
-    {
-      title: "Cases",
+      title: "My Cases",
       path: "cases",
       icon: <FileText className="h-5 w-5" />,
-      element: <FileText name="Lawyer Cases" />,
-    },
-    {
-      title: "Clients",
-      path: "clients",
-      icon: <Users className="h-5 w-5" />,
-      element: <Users name="Clients" />,
-    },
-    {
-      title: "Legal Research",
-      path: "research",
-      icon: <BookOpen className="h-5 w-5" />,
-      element: <BookOpen name="Legal Research" />,
-    },
+      element: <LawyerCases/>,
+    }
   ],
   clerk: [
     {
@@ -142,6 +115,18 @@ export const roleRoutes: Record<Role, RouteItem[]> = {
       path: "documents",
       icon: <FileSearch className="h-5 w-5" />,
       element: <FileSearch name="Document Management" />,
+    },
+    {
+      title: "Update Status",
+      path: "documents",
+      icon: <FileSearch className="h-5 w-5" />,
+      element: <FileSearch name="Document Management" />,
+    },
+    {
+      title: "Update Status",
+      path: `update-status`,
+      icon: <Home className="h-5 w-5" />,
+      element: <UpdateStatus/>,
     },
     
   ],

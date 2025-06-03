@@ -8,8 +8,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+
+// import org.springframework.security.access.prepost.PreAuthorize;
+// import org.springframework.security.core.annotation.AuthenticationPrincipal;
+// import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.fsad.JudiciaryManagementSiteBackend.DTO.UserDisplayDTO;
@@ -34,12 +40,14 @@ public class UserController {
 		};
 	}
 
+
 	@GetMapping("/role/{role}")
 	public List<IdFetchDTO> getUsersByRole(@PathVariable String role) {
 		return userRepository.findByRoleIgnoreCase(role).stream()
 				.map(user -> new IdFetchDTO(user.getId(), user.getFullName()))
 				.collect(Collectors.toList());
 	}
+
 
 	@Operation(summary = "Get all users for display with unified roles")
 	@GetMapping("/display")
@@ -53,6 +61,7 @@ public class UserController {
 				))
 				.collect(Collectors.toList());
 	}
+
 
 	@Operation(summary = "Get user by ID")
 	@ApiResponses(value = {
@@ -79,6 +88,7 @@ public class UserController {
 		return userRepository.save(user);
 	}
 
+
 	@Operation(summary = "Update user by ID")
 	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User updatedUser) {
@@ -87,6 +97,7 @@ public class UserController {
 			return ResponseEntity.ok(userRepository.save(updatedUser));
 		}).orElse(ResponseEntity.notFound().build());
 	}
+
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {

@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChevronLeft, ChevronRight, Plus, CalendarIcon, Clock, MapPin } from "lucide-react";
+import { useParams } from "react-router-dom";
 
 export default function CalendarPage() {
+  const { role } = useParams();
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const events = [

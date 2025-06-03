@@ -149,7 +149,7 @@ const ClerkCreateUser: React.FC = () => {
                 />
               </div>
             </div>
-            <Button type="submit" className="bg-blue-100 mt-4">
+            <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white mt-4">
               Create User
             </Button>
           </form>

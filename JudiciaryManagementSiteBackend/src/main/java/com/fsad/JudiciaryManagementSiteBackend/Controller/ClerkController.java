@@ -23,17 +23,20 @@ public class ClerkController {
 	@Autowired
 	private UserService userService;
 
+
 	@PostMapping("/cases")
 	@Operation(summary = "Create a new case")
 	public Case createCase(@RequestBody Case newCase) {
 		return caseService.createCase(newCase);
 	}
 
+
 	@PutMapping("/cases/{caseId}")
 	@Operation(summary = "Update case information")
 	public Case updateCase(@PathVariable Integer caseId, @RequestBody Case updatedCase) {
 		return caseService.updateCase(caseId, updatedCase);
 	}
+
 
 	@PostMapping("/judges")
 	@Operation(summary = "Add or update judge details")

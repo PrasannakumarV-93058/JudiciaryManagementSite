@@ -21,7 +21,7 @@ interface CaseForm {
   judgeId: number;
 }
 
-const ScheduleHearing: React.FC = () => {
+const JudgeScheduleHearing: React.FC = () => {
   const [formData, setFormData] = useState<CaseForm>({
     caseId: '',
     startTime: '',
@@ -29,7 +29,6 @@ const ScheduleHearing: React.FC = () => {
     judgeId: 0,
   });
 
-  const [judges, setJudges] = useState<Judge[]>([]);
   const [cases, setCases] = useState<Case[]>([]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -45,42 +44,43 @@ const ScheduleHearing: React.FC = () => {
       </button>
     </div>
   );
-
+const currentUserName= sessionStorage.getItem("currentUserName");
   useEffect(() => {
-    const token = sessionStorage.getItem('jwtToken');
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    };
-
     const fetchDropdownData = async () => {
       try {
-        const [judgesRes, caseRes] = await Promise.all([
-          fetch('http://localhost:8080/api/users/role/judge', { headers }),
-          fetch('http://localhost:8080/api/cases/display', { headers }),
-        ]);
-
-        const judgesData: Judge[] = await judgesRes.json();
-        const casesData: Case[] = await caseRes.json();
-        judgesData.sort((a, b) => a.fullName.localeCompare(b.fullName));
-
-        casesData.sort((a, b) => {
-          const numA = Number(a.id);
-          const numB = Number(b.id);
-    
-          if (!isNaN(numA) && !isNaN(numB)) {
-            return numA - numB;
-          }
-          return a.id.localeCompare(b.id);
-        });
-
-        setJudges(judgesData);
-        setCases(casesData);
+        const token = sessionStorage.getItem('jwtToken');
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        };
+  
+        const response = await fetch('http://localhost:8080/api/cases/display', { headers });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+  
+        const casesData: Case[] = await response.json();
+        console.log(casesData);
+        const filteredCases = casesData
+          .filter((c) => c.judgeName?.includes(currentUserName))
+          .sort((a, b) => {
+            const numA = Number(a.id);
+            const numB = Number(b.id);
+  
+            if (!isNaN(numA) && !isNaN(numB)) {
+              return numA - numB;
+            }
+            return a.id.localeCompare(b.id);
+          });
+          console.log(filteredCases);
+  
+        setCases(filteredCases);
       } catch (error) {
-        console.error('Error fetching dropdown data:', error);
+        console.error('Error fetching cases:', error);
       }
     };
-
+  
     fetchDropdownData();
   }, []);
 
@@ -175,21 +175,6 @@ const ScheduleHearing: React.FC = () => {
                 <Label htmlFor="nextHearing">Next Hearing</Label>
                 <Input type="date" name="nextHearing" value={formData.nextHearing} onChange={handleChange} />
               </div>
-              <div>
-                <Label htmlFor="judgeId">Judge</Label>
-                <Select onValueChange={handleJudgeChange} value={formData.judgeId.toString()}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Judge" />
-                  </SelectTrigger>
-                  <SelectContent className="max-w-3xl mx-auto bg-white shadow-md border border-gray-300">
-                    {judges.map((judge) => (
-                      <SelectItem key={judge.id} value={judge.id.toString()}>
-                        {judge.fullName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
             </div>
             <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white mt-4">Schedule Hearing</Button>
           </form>
@@ -201,4 +186,4 @@ const ScheduleHearing: React.FC = () => {
   );
 };
 
-export default ScheduleHearing;
+export default JudgeScheduleHearing;

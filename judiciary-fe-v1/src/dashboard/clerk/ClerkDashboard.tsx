@@ -1,7 +1,7 @@
 import { Card, CardContent, CardTitle, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from 'react';
-import { PlusCircle, CalendarPlus, Users } from "lucide-react";
+import { PlusCircle, CalendarPlus, Users,Gavel,Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ScrollArea } from '@/components/ui/scroll-area';
 import axios from "axios";
@@ -43,8 +43,17 @@ const ClerkDashboard = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setCases(response.data);
-      console.log(response.data);
+      const sortedCases = response.data.sort((a: { id: any }, b: { id: any }) => {
+        const numA = Number(a.id);
+        const numB = Number(b.id);
+    
+        if (!isNaN(numA) && !isNaN(numB)) {
+          return numA - numB;
+        }
+        return String(a.id).localeCompare(String(b.id));
+      });
+      setCases(sortedCases);
+      console.log(sortedCases);
     } catch (error) {
       console.error("Error fetching cases:", error);
     } finally {
@@ -79,19 +88,28 @@ const ClerkDashboard = () => {
       title: "Create New User",
       description: "Create or update details for lawyers, plaintiffs, and opponents.",
       icon: <Users className="w-6 h-6 text-purple-600" />,
-      actionText: "Manage",
+      actionText: "Create User",
       onClick: () => {
-        // handle participant management
+        navigate("/dashboard/clerk/create-user");
       },
     },
     {
       title: "Edit User Info",
       description: "Make changes to User Information",
-      icon: <PlusCircle className="w-6 h-6 text-blue-600" />,
+      icon: <Settings className="w-6 h-6 text-blue-600" />,
       actionText: "Edit User",
       buttonClass: "bg-blue-600 hover:bg-blue-700",
       onClick: () => {
         navigate("/dashboard/clerk/edit-user");
+      },
+    },
+    {
+      title: "Update Case Status",
+      description: "Log regular case updates entering all necessary case details.",
+      icon: <Gavel className="w-6 h-6 text-blue-600" />,
+      actionText: "Update Case",
+      onClick: () => {
+        navigate("/dashboard/clerk/update-status");
       },
     },
   ];
@@ -150,7 +168,7 @@ const ClerkDashboard = () => {
           <div><span className="font-medium">Category:</span> {c.category}</div>
           <div><span className="font-medium">Status:</span> {c.status.trim()}</div>
           <div><span className="font-medium">Start Date:</span> {new Date(c.startDate).toLocaleDateString()}</div>
-          <div><span className="font-medium">Next Hearing:</span> {c.nextHearing ? new Date(c.nextHearing).toLocaleDateString() : '-'}</div>
+          <div><span className="font-medium">Next Hearing:</span> {c.nextHearing ? new Date(c.nextHearing).toLocaleDateString() : 'Not Disclosed'}</div>
           <div><span className="font-medium">Judge:</span> {c.judgeName || '-'}</div>
           <div className="col-span-full">
             <span className="font-medium">Advocates:</span> {c.advocates.map(a => a.fullName).join(', ')}
