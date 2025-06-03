@@ -31,34 +31,23 @@ public class SecurityConfig {
 		this.userDetailsService = userDetailsService;
 	}
 
-//	@Bean
-//	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//		http
-//				.csrf(csrf -> csrf.disable())
-//				.authorizeHttpRequests(auth -> auth
-//						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//						.requestMatchers("/api/auth/login").permitAll()
-//						.anyRequest().authenticated()
-//				)
-//				.authenticationProvider(authenticationProvider())
-//				.addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
-//
-//		return http.build();
-//	}
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-				.cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ ADD THIS LINE
+				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-						.requestMatchers("/api/auth/login").permitAll()
-						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui.html").permitAll()
-						.requestMatchers("/login", "/", "/index.html").permitAll()
-						.anyRequest().authenticated()
+					.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+					.requestMatchers("/api/auth/login").permitAll()
+					.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/swagger-ui.html").permitAll()
+					.requestMatchers("/login", "/", "/index.html").permitAll()
+					.requestMatchers("/api/reports/generate-gemini").permitAll()
+					.requestMatchers("/api/reports/case/*/generate-gemini").permitAll()
+					.anyRequest().permitAll() // Allow all endpoints to be public
 				)
-				.authenticationProvider(authenticationProvider())
-				.addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
+				// .authenticationProvider(authenticationProvider()) // Disabled for public endpoints
+				// .addFilterBefore(new JwtAuthenticationFilter(jwtService), UsernamePasswordAuthenticationFilter.class); // Disabled for public endpoints
+		;
 
 		return http.build();
 	}
