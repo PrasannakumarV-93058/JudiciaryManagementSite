@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 // import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,14 +33,12 @@ public class AdvocateController {
 	@Autowired
 	private JwtService jwtService;
 
-	@PreAuthorize("hasRole('CLERK')")
 	@GetMapping
 	@Operation(summary = "Get all advocates")
 	public List<Advocate> getAllAdvocates() {
 		return advocateRepository.findAll();
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@GetMapping("/{id}")
 	@Operation(summary = "Get advocate by ID")
 	public Advocate getAdvocateById(@PathVariable Integer id) {
@@ -49,14 +46,12 @@ public class AdvocateController {
 				.orElseThrow(() -> new RuntimeException("Advocate not found with id " + id));
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@PostMapping
 	@Operation(summary = "Create a new advocate")
 	public Advocate createAdvocate(@RequestBody Advocate advocate) {
 		return advocateRepository.save(advocate);
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@PutMapping("/{id}")
 	@Operation(summary = "Update an advocate by ID")
 	public Advocate updateAdvocate(@PathVariable Integer id, @RequestBody Advocate updatedAdvocate) {
@@ -74,7 +69,6 @@ public class AdvocateController {
 		return advocateRepository.save(advocate);
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@DeleteMapping("/{id}")
 	@Operation(summary = "Delete an advocate by ID")
 	public void deleteAdvocate(@PathVariable Integer id) {

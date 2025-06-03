@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +34,6 @@ public class UserController {
 		};
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@GetMapping("/role/{role}")
 	public List<IdFetchDTO> getUsersByRole(@PathVariable String role) {
 		return userRepository.findByRoleIgnoreCase(role).stream()
@@ -43,7 +41,6 @@ public class UserController {
 				.collect(Collectors.toList());
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@Operation(summary = "Get all users for display with unified roles")
 	@GetMapping("/display")
 	public List<UserDisplayDTO> getAllUsersForDisplay() {
@@ -57,7 +54,6 @@ public class UserController {
 				.collect(Collectors.toList());
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@Operation(summary = "Get user by ID")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "User found"),
@@ -83,7 +79,6 @@ public class UserController {
 		return userRepository.save(user);
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@Operation(summary = "Update user by ID")
 	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User updatedUser) {
@@ -93,7 +88,6 @@ public class UserController {
 		}).orElse(ResponseEntity.notFound().build());
 	}
 
-	@PreAuthorize("hasRole('CLERK')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
 		return userRepository.findById(id).map(user -> {
