@@ -38,6 +38,7 @@ public class ReportController {
 	// Endpoint to generate case reports
 	@GetMapping("/cases")
 	@Operation(summary = "Generate reports on cases and results")
+
 	public List<CaseDisplayDTO> getCaseReports() {
 		try {
 			List<CaseDisplayDTO> caseReports = reportService.generateCaseDisplayReports();

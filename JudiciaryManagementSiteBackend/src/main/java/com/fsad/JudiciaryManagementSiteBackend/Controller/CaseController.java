@@ -9,6 +9,7 @@ import com.fsad.JudiciaryManagementSiteBackend.Repository.CaseRepository;
 import com.fsad.JudiciaryManagementSiteBackend.Repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
